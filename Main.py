@@ -85,10 +85,33 @@ simulation_dictionary={
         ["Updated file gtapDATA = Results/13SecNAI.upd;\n",
          "Solution file = Results/13SecNAI;\n",
          "swap qo(\"capital\",REG) = Expand(\"capital\",REG);\n",
-         "shock afeall(all_lab, nonai_comm, \"usa\") = uniform 50;\n"]
+         "shock afeall(all_lab, nonai_comm, \"usa\") = uniform 50;\n"],
+    '14World':
+        ["Updated file gtapDATA = Results/14World.upd;\n",
+         "Solution file = Results/14World;\n",
+         "swap qo(\"capital\",REG) = Expand(\"capital\",REG);\n",
+         "shock qo(all_lab, reg) = uniform 50;\n"],
+    '15China':
+        ["Updated file gtapDATA = Results/15China.upd;\n",
+         "Solution file = Results/15China;\n",
+         "swap qo(\"capital\",REG) = Expand(\"capital\",REG);\n",
+         "shock qo(all_lab, \"china\") = uniform 50;\n"],
+    '16LowSk':
+        ["Updated file gtapDATA = Results/16LowSk.upd;\n",
+         "Solution file = Results/16LowSk;\n",
+         "swap qo(\"capital\",REG) = Expand(\"capital\",REG);\n",
+         "shock qo(lo_lab, \"usa\") = uniform 50;\n"],
+    '17HiSk':
+        ["Updated file gtapDATA = Results/17HiSk.upd;\n",
+         "Solution file = Results/17HiSk;\n",
+         "swap qo(\"capital\",REG) = Expand(\"capital\",REG);\n",
+         "shock qo(hi_lab, \"usa\") = uniform 50;\n"],
+    '18AiSecW': #Increase producivity of AI sectors, but in entire world (not just US as in 11)
+        ["Updated file gtapDATA = Results/17HiSk.upd;\n",
+         "Solution file = Results/17HiSk;\n",
+         "swap qo(\"capital\",REG) = Expand(\"capital\",REG);\n",
+         "shock afeall(all_lab, ai_comm, reg) = uniform 50;\n"]
 }
-
-
 
 #Loop to create the cmf file and run it
 for simulation_name in simulation_dictionary.keys():
