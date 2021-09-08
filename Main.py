@@ -8,6 +8,7 @@ import subprocess
 # Instructions on how to write a cmf file are available here:
 # https://www.kite.com/python/answers/how-to-write-to-a-file-in-python
 
+#Define the lines in common to all cmf files
 lines_common=[
     "!Define AI and non-AI Sectors\n",
     "XSET AI_COMM # AI related comms # (OthServices, CMN, OBS, Transport) ;\n",
@@ -58,6 +59,9 @@ lines_common=[
     "\n",
 ]
 
+#Define the dictionary of simulations. It is of the form:
+# key (Sim code name):
+# Entry (Sim cmf stuff, such as solution file location and the shocks
 simulation_dictionary={
     '01Ref' :
     ["Updated file gtapDATA = Results/01Ref.upd;\n",
@@ -79,6 +83,7 @@ simulation_dictionary={
          "shock qo(all_lab , \"usa\") = uniform 50;\n"]
 }
 
+#Loop to create the cmf file and run it
 for simulation_name in simulation_dictionary.keys():
     cmf_file  = open("Control_Files/{0}.cmf".format(simulation_name), "w")
     cmf_file.writelines(lines_common + simulation_dictionary[simulation_name])
