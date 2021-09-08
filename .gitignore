@@ -1,0 +1,6 @@
+.Rproj.user
+.Rhistory
+.RData
+/venv/
+/.idea/
+/SaveSims/gpxx1.log

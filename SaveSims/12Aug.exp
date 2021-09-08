@@ -1,0 +1,51 @@
+file gtapPARM = default.prm;
+Verbal Description =
+12 All US Sectors. Productivity;
+Method = Gragg;
+Steps = 2 4 6;
+automatic accuracy = yes;
+accuracy figures = 4;
+accuracy percent = 99;
+minimum subinterval length =  1.0E-0003;
+minimum subinterval fails = stop;
+accuracy criterion = Data;
+subintervals = 2;
+exogenous
+          pop
+          psaveslack pfactwld
+          profitslack incomeslack endwslack
+          cgdslack tradslack
+          ams atm atf ats atd
+          aosec aoreg avasec avareg
+          afcom afsec afreg afecom afesec afereg
+          aoall afall afeall
+          au dppriv dpgov dpsave
+          to tp tm tms tx txs
+          qo(ENDW_COMM,REG)
+          atall avaall tf tfd tfm tgd tpd tgm tpm;
+Rest Endogenous ;
+
+swap qo("capital",REG) = Expand("capital",REG);
+ Shock afeall(ALL_LAB , PROD_COMM, "USA") = uniform 50;
+
+!@ contents of CMFStart when this EXP file was last saved
+!@ below is a record only....not read by RunGTAP
+!@ RunGTAP reads from the actual CMFSTART file
+!@ !Define AI and non-AI Sectors
+!@ XSET AI_COMM # AI related comms # (OthServices, CMN, OBS, Transport) ;
+!@ XSUBSET AI_COMM is subset of TRAD_COMM ;
+!@ XSET NONAI_COMM = TRAD_COMM - AI_COMM ;
+!@ 
+!@ !Define Labor, High, and Low
+!@ !Off_Mgr_Pros is ILO category 1
+!@ !Tech_AsPros is ILO 2 and 3
+!@ !Clerks is ILO 4
+!@ !Service_Shop is ILO 5
+!@ !Ag_OthLowSk is ILO 6-9
+!@ XSET HI_LAB # High Skilled Labor # (Off_Mgr_Pros, Tech_AsPros) ;
+!@ XSUBSET HI_LAB is subset of ENDW_COMM ;
+!@ XSET LO_LAB # Low Skilled Labor # (Clerks, Service_Shop, Ag_OthLowSk) ;
+!@ XSUBSET LO_LAB is subset of ENDW_COMM ;
+!@ XSET ALL_LAB = HI_LAB + LO_LAB ;
+!@ XSUBSET ALL_LAB is subset of ENDW_COMM ;
+!@ end of CMFSTART part

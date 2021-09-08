@@ -1,0 +1,4149 @@
+ 
+ This GEMPACK log file was created at 16:53:58 on 20-JUL-2021 by the program
+  <gtapu.for 09-SEP-2020 (a TABLO-generated program)>
+ which accesses some of the routines in the GEMPACK software release
+  <GEMPACK Release 12.1.003   January 2020>
+ 
+ 
+  (Processing command line options.)
+ 
+ 
+  (Opening log file '17HiSk.log')
+ (Opened new text file '17HiSk.log'.)
+ Sending output just to a log file
+  
+ 
+ <gtapu.for 09-SEP-2020 (a TABLO-generated program)>
+   This program accesses some of the routines in the GEMPACK software release
+ <GEMPACK Release 12.1.003   January 2020>
+  
+ Licence file: C:\GP\licen.gem
+  
+     -------------------------------------------------------
+    !            GEMPACK Software System Licence            !
+    !   Single-user Executable-image Licence for GEMPACK    !
+    !                 Licence No.  GES-0666                 !
+    !          Licence for Release 12.2 of GEMPACK          !
+    !                Individual RunGTAP user                !
+    !                    For course use                     !
+    !    (Your GEMPACK licence expires on 05-MAR-2030.)     !
+     -------------------------------------------------------
+ 
+ 
+     << COPYRIGHT 1987-2018: CoPS/Impact and KPSOFT >>
+ 
+  Current directory is: C:\runGTAP375\work
+  
+ 
+  Full path name of running EXE is: C:\runGTAP375\gtapu.exe
+  Fortran compiler = GF64   version 6.4.0 64 bit
+  BLAS library: OpenBlas
+  OPENMP number of threads: 12
+  Gempack source corresponds to revision 1156.
+  Operating System is Microsoft Windows 10 Pro
+ 
+ 
+  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 
+ 
+                    TABLO-GENERATED PROGRAM OPTIONS
+               ( --> indicates those in effect )
+ 
+       BAT Run in batch              STI Take inputs from a Stored-input file
+       BPR Brief prompts             SIF Store inputs on a file
+   --> LOG Output to log file        ASI Add to incomplete Stored-input file
+                                     CMF Take inputs from a Command file
+       EAA Echo all activity           SVX Select variables on XAC file (later)
+   --> CPU Report CPU times            RQF Required figures agreement (extrap)
+       NRP Don't reuse pivots        NIR Don't do solution iterative refinement
+                                 --> IZ1 Ignore zero coefficients in step 1
+                                     KZ2 Keep zero coefficients in steps 2,3 etc
+       NEQ Do no equations           NWE Don't warn how well equations solved
+       NDS Do no displays            SSI Several subintervals; extrap after each
+       NWR Do no writes              M28 Use MA28 routines (rather than MA48)
+       NAS Do no assertions          SUI Save updated formula(initial) data
+       NUD Do no final updates              Extra Options Screen
+       NSM Don't do simulation              --------------------
+       NWT Use Newton's method      DTO Display, Terminal/Text write Options
+       CR  Check-on-read options
+ 
+  Select an option   :  <opt>      Deselect an option      : -<opt>
+  Help for an option : ?<opt>      Help on all options     : ??
+  Redisplay options  : /           Finish option selection : Carriage return
+  
+ (Opened, as text, existing file '17HiSk.cmf'.)
+  (Taking inputs from a command file.)
+ (Opened, as text, existing file '17HiSk.cmf'.)
+ 
+  !  (There is no CREATION information on this file.)
+  
+ 
+  --> Reading the Command file.
+  
+ ! This Command file
+ ! C:\runGTAP375\work\17HiSk.cmf
+ ! was written by RunGTAP (Version 3.75 built 10/Mar/2021)
+ !Define AI and non-AI Sectors
+ XSET AI_COMM # AI related comms # (OthServices, CMN, OBS, Transport) ;
+ XSUBSET AI_COMM is subset of TRAD_COMM ;
+ XSET NONAI_COMM = TRAD_COMM - AI_COMM ;
+ 
+ !Define Labor, High, and Low
+ !Off_Mgr_Pros is ILO category 1
+ !Tech_AsPros is ILO 2 and 3
+ !Clerks is ILO 4
+ !Service_Shop is ILO 5
+ !Ag_OthLowSk is ILO 6-9
+ XSET HI_LAB # High Skilled Labor # (Off_Mgr_Pros, Tech_AsPros) ;
+ XSUBSET HI_LAB is subset of ENDW_COMM ;
+ XSET LO_LAB # Low Skilled Labor # (Clerks, Service_Shop, Ag_OthLowSk) ;
+ XSUBSET LO_LAB is subset of ENDW_COMM ;
+ XSET ALL_LAB = HI_LAB + LO_LAB ;
+ XSUBSET ALL_LAB is subset of ENDW_COMM ;
+ !@ end of CMFSTART part
+ aux files = C:\runGTAP375\GTAPU;
+ file gtapSETS = C:\runGTAP375\GeoAI\sets.har;
+ file gtapDATA = C:\runGTAP375\GeoAI\basedata.har;
+ Updated file gtapDATA = gdata.upd;
+ Solution file = C:\runGTAP375\work\17HiSk;
+ file gtapPARM = C:\runGTAP375\GeoAI\default.prm;
+ Verbal Description =
+ Increase supply of US high skill labor only;
+ Method = Gragg;
+ Steps = 2 4 6;
+ automatic accuracy = yes;
+ accuracy figures = 4;
+ accuracy percent = 99;
+ minimum subinterval length =  1.0E-0003;
+ minimum subinterval fails = stop;
+ accuracy criterion = Data;
+ subintervals = 2;
+ exogenous
+           pop
+           psaveslack pfactwld
+           profitslack incomeslack endwslack
+           cgdslack tradslack
+           ams atm atf ats atd
+           aosec aoreg avasec avareg
+           afcom afsec afreg afecom afesec afereg
+           aoall afall afeall
+           au dppriv dpgov dpsave
+           to tp tm tms tx txs
+           qo(ENDW_COMM,REG)
+           atall avaall tf tfd tfm tgd tpd tgm tpm;
+ Rest Endogenous ;
+ 
+ swap qo("capital",REG) = Expand("capital",REG);
+ shock qo( hi_lab , "usa") = uniform 50;
+ 
+  (Finished reading the command file.)
+ 
+  Auxiliary Statement File
+  ---------------------
+ (Opened, as binary, existing file 'C:\runGTAP375\gtapu.axs'.)
+ 
+  Auxiliary Table File
+  -----------------
+ (Opened, as header, existing file 'C:\runGTAP375\gtapu.axt'.)
+ 
+  !  This file was created at 13:51:37 on 09-SEP-2020 by the program
+  !    <TABLO  Version 7.0   August 2018>
+  !  which accesses some of the routines in the GEMPACK software release
+  !    <GEMPACK Release 12.1.003   January 2020>
+  !  [The program which created this file was compiled with GF64.]
+  
+ Auxiliary Table File was created by TABLO at 13:51:37 on 09-SEP-2020
+ [TABLO file used here is "gtapu.tab".]
+ [No TABLO STI file used when TABLO was run.]
+ 
+  Using Gempack optimized version of LU decompositions
+  With this option active several old options are obsolete.
+  These options concern: Markowitz pivots, and those starting with pivots, MA48 and MA28.
+ 
+  Search depth for LU is set to 32
+  Column Filter threshold is set to 5.0000001E-02
+  Harwell paramter for reuse is set to -1.000000
+ 
+ [This TG-program was created by TABLO at 13:51:37 on 09-SEP-2020.]
+ When TABLO was run, GPDIR="C:\GP"
+ 
+  [Starting to check "extra" statements on the Command file.]
+  
+  [Statement "AI_COMM is subset of PROD_COMM ;" added by TABLO.]
+  [Statement "AI_COMM is subset of DEMD_COMM ;" added by TABLO.]
+  [Statement "AI_COMM is subset of NSAV_COMM ;" added by TABLO.]
+  [Statement "NONAI_COMM is subset of PROD_COMM ;" added by TABLO.]
+  [Statement "NONAI_COMM is subset of DEMD_COMM ;" added by TABLO.]
+  [Statement "NONAI_COMM is subset of NSAV_COMM ;" added by TABLO.]
+  [Statement "HI_LAB is subset of DEMD_COMM ;" added by TABLO.]
+  [Statement "HI_LAB is subset of NSAV_COMM ;" added by TABLO.]
+  [Statement "LO_LAB is subset of DEMD_COMM ;" added by TABLO.]
+  [Statement "LO_LAB is subset of NSAV_COMM ;" added by TABLO.]
+  [Statement "ALL_LAB is subset of DEMD_COMM ;" added by TABLO.]
+  [Statement "ALL_LAB is subset of NSAV_COMM ;" added by TABLO.]
+ 
+  [Finished checking "extra" statements on the Command file.]
+  
+ 
+ ++++++++++++++++++++++++++++++++++++++++++++++++++
+  This program was written by the GEMPACK program TABLO 
+  as described in the Information file
+  'gtapu.inf
+ 
+  This run of the TABLO-generated program
+      o can create the Equations file (for the condensed system)
+      o can check 2 ASSERTIONs
+      o can carry out multi-step simulations
+ 
+ ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 
+  (Automatic accuracy testing will be done.)
+ (Accuracy figures set at 4.)
+ (Accuracy percent set at 99.00000.)
+ (Accuracy criterion is DATA.)
+ (Minimum subinterval length set at 1.0000000E-03.)
+ (Will STOP if minimum subinterval length fails.)
+ (Will range test both updated and extrapolated values.)
+ 
+  (Method is gragg.)
+  (Extrapolating from 2, 4 and 6-step solutions.)
+ 
+  (Number of subintervals is 2.)
+ (Will range test initial values.)
+  (Model is ''.   Version number is 1.)
+ (Opened new header file 'C:\runGTAP375\work\17HiSk.sl4'.)
+ (Solution file is 'C:\runGTAP375\work\17HiSk.sl4'.)
+ (Opened new header file 'C:\runGTAP375\work\17HiSk.slc'.)
+ (Opened, as text, existing file '17HiSk.cmf'.)
+ 
+  !  (There is no CREATION information on this file.)
+  
+ (Opened new text file 'C:\runGTAP375\work\17HiSk.aal'.)
+ 
+  (Data file with logical name 'GTAPSETS')
+ (Opened, as header, existing file 'C:\runGTAP375\GeoAI\sets.har'.)
+ 
+  !  This file was created at 14:53:42 on 06-JUN-2021 by the program
+  !    <aggdat.for 03-SEP-2019> [aggdat.tab]
+  !  which accesses some of the routines in the GEMPACK software release
+  !    <GEMPACK Release 11.4.003   January 2016>
+  !  [The program which created this file was compiled with GF64.]
+  
+ 
+  (Data file with logical name 'GTAPDATA')
+ (Opened, as header, existing file 'C:\runGTAP375\GeoAI\basedata.har'.)
+ 
+  !  This file was created at 14:53:42 on 06-JUN-2021 by the program
+  !    <aggdat.for 03-SEP-2019> [aggdat.tab]
+  !  which accesses some of the routines in the GEMPACK software release
+  !    <GEMPACK Release 11.4.003   January 2016>
+  !  [The program which created this file was compiled with GF64.]
+  
+ 
+  (Data file with logical name 'GTAPPARM')
+ (Opened, as header, existing file 'C:\runGTAP375\GeoAI\default.prm'.)
+ 
+  !  This file was created at 14:53:42 on 06-JUN-2021 by the program
+  !    <aggpar.for 03-SEP-2019> [aggpar.tab]
+  !  which accesses some of the routines in the GEMPACK software release
+  !    <GEMPACK Release 11.4.003   January 2016>
+  !  [The program which created this file was compiled with GF64.]
+  
+ 
+  UPDATED VERSION OF DATA FILE WITH LOGICAL NAME 'GTAPDATA
+  ---------------------------------------------------------
+ (Opened new header file 'gdata.upd'.)
+ 
+  +++>  Beginning subinterval number 1.
+ 
+  --->  Beginning the preliminary pass (aimed at sets and subsets).
+ Set 'REG'
+ (Opened, as header, existing file 'C:\runGTAP375\GeoAI\sets.har'.)
+   [Set has size 10.]
+ Set 'TRAD_COMM'
+   [Set has size 10.]
+ Set 'MARG_COMM'
+   [Set has size 1.]
+ 'MARG_COMM' as a subset of 'TRAD_COMM'
+ Set 'NMRG_COMM'
+   [Set has size 9.]
+ 'NMRG_COMM' as a subset of 'TRAD_COMM'
+ Set 'CGDS_COMM'
+   [Set has size 1.]
+ Set 'ENDW_COMM'
+   [Set has size 8.]
+ Set 'PROD_COMM'
+   [Set has size 11.]
+ 'TRAD_COMM' as a subset of 'PROD_COMM'
+ 'CGDS_COMM' as a subset of 'PROD_COMM'
+ 'MARG_COMM' as a subset of 'PROD_COMM'
+ 'NMRG_COMM' as a subset of 'PROD_COMM'
+ Set 'DEMD_COMM'
+   [Set has size 18.]
+ 'ENDW_COMM' as a subset of 'DEMD_COMM'
+ 'TRAD_COMM' as a subset of 'DEMD_COMM'
+ 'MARG_COMM' as a subset of 'DEMD_COMM'
+ 'NMRG_COMM' as a subset of 'DEMD_COMM'
+ Set 'NSAV_COMM'
+   [Set has size 19.]
+ 'DEMD_COMM' as a subset of 'NSAV_COMM'
+ 'CGDS_COMM' as a subset of 'NSAV_COMM'
+ 'TRAD_COMM' as a subset of 'NSAV_COMM'
+ 'MARG_COMM' as a subset of 'NSAV_COMM'
+ 'NMRG_COMM' as a subset of 'NSAV_COMM'
+ 'ENDW_COMM' as a subset of 'NSAV_COMM'
+ 'PROD_COMM' as a subset of 'NSAV_COMM'
+ (Opened, as header, existing file 'C:\runGTAP375\GeoAI\default.prm'.)
+ Reading SLUG(ENDW_COMM)
+ (Read integer array, size 8, header "SLUG".)
+  Formula for set 'ENDWS_COMM'
+ Set 'ENDWS_COMM'
+   [Set has size 2.]
+ 'ENDWS_COMM' as a subset of 'ENDW_COMM'
+ 'ENDWS_COMM' as a subset of 'DEMD_COMM'
+ 'ENDWS_COMM' as a subset of 'NSAV_COMM'
+ Set 'ENDWM_COMM'
+   [Set has size 6.]
+ 'ENDWM_COMM' as a subset of 'ENDW_COMM'
+ 'ENDWM_COMM' as a subset of 'DEMD_COMM'
+ 'ENDWM_COMM' as a subset of 'NSAV_COMM'
+ Set 'ENDWC_COMM'
+   [Set has size 1.]
+ 'ENDWC_COMM' as a subset of 'ENDW_COMM'
+ 'ENDWC_COMM' as a subset of 'DEMD_COMM'
+ 'ENDWC_COMM' as a subset of 'NSAV_COMM'
+ Set 'AI_COMM'
+   [Set has size 4.]
+ 'AI_COMM' as a subset of 'TRAD_COMM'
+ 'AI_COMM' as a subset of 'PROD_COMM'
+ 'AI_COMM' as a subset of 'DEMD_COMM'
+ 'AI_COMM' as a subset of 'NSAV_COMM'
+ Set 'NONAI_COMM'
+   [Set has size 6.]
+ 'NONAI_COMM' as a subset of 'TRAD_COMM'
+ 'NONAI_COMM' as a subset of 'PROD_COMM'
+ 'NONAI_COMM' as a subset of 'DEMD_COMM'
+ 'NONAI_COMM' as a subset of 'NSAV_COMM'
+ Set 'HI_LAB'
+   [Set has size 2.]
+ 'HI_LAB' as a subset of 'ENDW_COMM'
+ 'HI_LAB' as a subset of 'DEMD_COMM'
+ 'HI_LAB' as a subset of 'NSAV_COMM'
+ Set 'LO_LAB'
+   [Set has size 3.]
+ 'LO_LAB' as a subset of 'ENDW_COMM'
+ 'LO_LAB' as a subset of 'DEMD_COMM'
+ 'LO_LAB' as a subset of 'NSAV_COMM'
+ Set 'ALL_LAB'
+   [Set has size 5.]
+ 'HI_LAB' as a subset of 'ALL_LAB'
+ 'LO_LAB' as a subset of 'ALL_LAB'
+ 'ALL_LAB' as a subset of 'ENDW_COMM'
+ 'ALL_LAB' as a subset of 'DEMD_COMM'
+ 'ALL_LAB' as a subset of 'NSAV_COMM'
+ [CPU for reads, formulas etc is 0.02 seconds.]
+ Elapsed time for reads, formulas etc is: less than one second.
+ 
+  ------- MODEL REPORT ------
+  The un-condensed model contains:
+      243 variables comprising 44137 components
+  and 210 equation blocks comprising 33464 separate equations.
+ 
+      58 variables (comprising 24210 components) will be backsolved for.
+      0 variables (comprising 0 components) were substituted out.
+      0 variables (comprising 0 components) were omitted.
+ 
+  So the condensed model contains:
+      185 variables comprising 19927 components
+  and 152 equation blocks comprising 9254 separate equations.
+  ------- END OF MODEL REPORT ------
+  
+   (1 character strings, each of length 1 read. Header "SVFM")
+ 
+  Total memory currently used for all arrays is approximately 4.94 megabytes.
+  [This does NOT include memory related to MMNZ, MMNZ1 and MMNZ2. The
+   associated arrays are not allocated.]
+  [Add about 5-10 megabytes for the memory used by the code.]
+  [Total memory currently allocated for Coefficients and Updated
+   Coefficients is about        0.2 and        0.0 MB respectively.]
+ 
+  --->  Beginning pass number 1 of 3-pass calculation, subinterval 1.
+ 
+  CHOICE OF ECONOMIC ENVIRONMENT
+  (All components of 'pop' chosen to be exogenous.)
+  (All components of 'psaveslack' chosen to be exogenous.)
+  (All components of 'pfactwld' chosen to be exogenous.)
+  (All components of 'profitslack' chosen to be exogenous.)
+  (All components of 'incomeslack' chosen to be exogenous.)
+  (All components of 'endwslack' chosen to be exogenous.)
+  (All components of 'cgdslack' chosen to be exogenous.)
+  (All components of 'tradslack' chosen to be exogenous.)
+  (All components of 'ams' chosen to be exogenous.)
+  (All components of 'atm' chosen to be exogenous.)
+  (All components of 'atf' chosen to be exogenous.)
+  (All components of 'ats' chosen to be exogenous.)
+  (All components of 'atd' chosen to be exogenous.)
+  (All components of 'aosec' chosen to be exogenous.)
+  (All components of 'aoreg' chosen to be exogenous.)
+  (All components of 'avasec' chosen to be exogenous.)
+  (All components of 'avareg' chosen to be exogenous.)
+  (All components of 'afcom' chosen to be exogenous.)
+  (All components of 'afsec' chosen to be exogenous.)
+  (All components of 'afreg' chosen to be exogenous.)
+  (All components of 'afecom' chosen to be exogenous.)
+  (All components of 'afesec' chosen to be exogenous.)
+  (All components of 'afereg' chosen to be exogenous.)
+  (All components of 'aoall' chosen to be exogenous.)
+  (All components of 'afall' chosen to be exogenous.)
+  (All components of 'afeall' chosen to be exogenous.)
+  (All components of 'au' chosen to be exogenous.)
+  (All components of 'dppriv' chosen to be exogenous.)
+  (All components of 'dpgov' chosen to be exogenous.)
+  (All components of 'dpsave' chosen to be exogenous.)
+  (All components of 'to' chosen to be exogenous.)
+  (All components of 'tp' chosen to be exogenous.)
+  (All components of 'tm' chosen to be exogenous.)
+  (All components of 'tms' chosen to be exogenous.)
+  (All components of 'tx' chosen to be exogenous.)
+  (All components of 'txs' chosen to be exogenous.)
+  (The following components of 'qo' have been chosen to be exogenous :
+  1-8, 20-27, 39-46, 58-65, 77-84, 96-103, 115-122, 134-141, 153-160, 172-179
+  (All components of 'atall' chosen to be exogenous.)
+  (All components of 'avaall' chosen to be exogenous.)
+  (All components of 'tf' chosen to be exogenous.)
+  (All components of 'tfd' chosen to be exogenous.)
+  (All components of 'tfm' chosen to be exogenous.)
+  (All components of 'tgd' chosen to be exogenous.)
+  (All components of 'tpd' chosen to be exogenous.)
+  (All components of 'tgm' chosen to be exogenous.)
+  (All components of 'tpm' chosen to be exogenous.)
+  (Swapped 10 component(s) of 'qo' and 'EXPAND'.)
+ (Finished specifying closure.)
+ 
+  [ Current closure is valid, namely,
+    there are 10673 exogenous and 9254 endogenous.]
+ 
+ 
+ (Completed specifying a closure.)
+ 
+  (Value of Harwell parameter U to be used is  0.1000000.)
+ 
+  SHOCKS
+  ------
+  
+  (The following components of 'qo' have been chosen to be shocked :
+  2, 5
+  Component 5, value 50.00000 ;  component 2, value 50.00000
+ 
+ (Total number of nonzero shocks is 2.)
+ (Opened, as header, existing file 'C:\runGTAP375\GeoAI\basedata.har'.)
+ Reading VERNUM
+ (Read real array, size 1, header "DVER".)
+  Formula for 'SIZE_TRAD'
+  Formula for 'SIZE_ENDW'
+  Formula for 'SIZE_DEMD'
+  Assertion at line number 201
+  Formula for 'SIZE_CGDS'
+  Formula for 'SIZE_PROD'
+  Assertion at line number 212
+ (Opened, as header, existing file 'C:\runGTAP375\GeoAI\default.prm'.)
+ Reading SLUG(ENDW_COMM)
+ (Read integer array, size 8, header "SLUG".)
+ (Opened, as header, existing file 'C:\runGTAP375\GeoAI\basedata.har'.)
+ Reading SAVE(REG)
+ (Read real array, size 10, header "SAVE".)
+ Reading VDGA(TRAD_COMM,REG)
+ (Read real array, size 10x10, header "VDGA".)
+ Reading VDGM(TRAD_COMM,REG)
+ (Read real array, size 10x10, header "VDGM".)
+ Reading VIGA(TRAD_COMM,REG)
+ (Read real array, size 10x10, header "VIGA".)
+ Reading VIGM(TRAD_COMM,REG)
+ (Read real array, size 10x10, header "VIGM".)
+ Reading VDPA(TRAD_COMM,REG)
+ (Read real array, size 10x10, header "VDPA".)
+ Reading VDPM(TRAD_COMM,REG)
+ (Read real array, size 10x10, header "VDPM".)
+ Reading VIPA(TRAD_COMM,REG)
+ (Read real array, size 10x10, header "VIPA".)
+ Reading VIPM(TRAD_COMM,REG)
+ (Read real array, size 10x10, header "VIPM".)
+ Reading EVOA(ENDW_COMM,REG)
+ (Read real array, size 8x10, header "EVOA".)
+ Reading EVFA(ENDW_COMM,PROD_COMM,REG)
+ (Read real array, size 8x11x10, header "EVFA".)
+ Reading VDFA(TRAD_COMM,PROD_COMM,REG)
+ (Read real array, size 10x11x10, header "VDFA".)
+ Reading VIFA(TRAD_COMM,PROD_COMM,REG)
+ (Read real array, size 10x11x10, header "VIFA".)
+ Reading VFM(ENDW_COMM,PROD_COMM,REG)
+ (Read real array, size 8x11x10, header "VFM".)
+ Reading VIFM(TRAD_COMM,PROD_COMM,REG)
+ (Read real array, size 10x11x10, header "VIFM".)
+ Reading VDFM(TRAD_COMM,PROD_COMM,REG)
+ (Read real array, size 10x11x10, header "VDFM".)
+ Reading VDEP(REG)
+ (Read real array, size 10, header "VDEP".)
+ Reading VIMS(TRAD_COMM,REG,REG)
+ (Read real array, size 10x10x10, header "VIMS".)
+ Reading VIWS(TRAD_COMM,REG,REG)
+ (Read real array, size 10x10x10, header "VIWS".)
+ Reading VXWD(TRAD_COMM,REG,REG)
+ (Read real array, size 10x10x10, header "VXWD".)
+ Reading VXMD(TRAD_COMM,REG,REG)
+ (Read real array, size 10x10x10, header "VXMD".)
+ Reading VST(MARG_COMM,REG)
+ (Read real array, size 1x10, header "VST".)
+  Formula for 'VFA'
+  Formula for 'VFA'
+  Formula for 'VOA'
+  Formula for 'VOA'
+  Formula for 'VDM'
+  Formula for 'VOM'
+  Formula for 'VOM'
+  Formula for 'VOM'
+  Formula for 'VOM'
+  Formula for 'VGA'
+  Formula for 'GOVEXP'
+  Formula for 'VPA'
+  Formula for 'PRIVEXP'
+  Formula for 'INCOME'
+  Formula for 'DGTAX'
+  Formula for 'IGTAX'
+  Formula for 'TGC'
+  Formula for 'DPTAX'
+  Formula for 'IPTAX'
+  Formula for 'TPC'
+  Formula for 'DFTAX'
+  Formula for 'IFTAX'
+  Formula for 'TIU'
+  Formula for 'ETAX'
+  Formula for 'TFU'
+  Formula for 'PTAX'
+  Formula for 'TOUT'
+  Formula for 'XTAXD'
+  Formula for 'TEX'
+  Formula for 'MTAX'
+  Formula for 'TIM'
+ (Opened, as header, existing file 'C:\runGTAP375\GeoAI\default.prm'.)
+ Reading ESUBD(TRAD_COMM)
+ (Read real array, size 10, header "ESBD".)
+  Formula for 'REGINV'
+  Formula for 'NETINV'
+  Formula for 'GLOBINV'
+  Formula for 'CONSHR'
+ Reading INCPAR(TRAD_COMM,REG)
+ (Read real array, size 10x10, header "INCP".)
+  Formula for 'UELASPRIV'
+  Formula for 'GMSHR'
+  (Number of ZERO DIVIDED BY ZERO operations was 10.)
+    ( Default value used was 0.000000. )
+  Formula for 'XWCONSHR'
+ Reading SUBPAR(TRAD_COMM,REG)
+ (Read real array, size 10x10, header "SUBP".)
+  Formula for 'ALPHA'
+  Formula for 'APE'
+  Formula for 'APE'
+  Formula for 'EY'
+  Formula for 'EP'
+  Formula for 'EP'
+  Formula for 'LevTPD'
+  Formula for 'PMSHR'
+ Reading ESUBT(PROD_COMM)
+ (Read real array, size 11, header "ESBT".)
+  Formula for 'FMSHR'
+  (Number of ZERO DIVIDED BY ZERO operations was 10.)
+    ( Default value used was 0.5000000. )
+  Formula for 'VVA'
+  Formula for 'SVADEFAULT'
+  Formula for 'SVA'
+  Formula for 'SVA'
+ Reading ESUBVA(PROD_COMM)
+ (Read real array, size 11, header "ESBV".)
+  Formula for 'STC'
+ (Opened, as header, existing file 'C:\runGTAP375\GeoAI\basedata.har'.)
+ Reading VKB(REG)
+ (Read real array, size 10, header "VKB".)
+  Formula for 'INVKERATIO'
+  Formula for 'GRNETRATIO'
+ (Opened, as header, existing file 'C:\runGTAP375\GeoAI\default.prm'.)
+ Reading RORFLEX(REG)
+ (Read real array, size 10, header "RFLX".)
+ Reading RORDELTA
+ (Read integer array, size 1, header "RDLT".)
+  Formula for 'MSHRS'
+ Reading ESUBM(TRAD_COMM)
+ (Read real array, size 10, header "ESBM".)
+ (Opened, as header, existing file 'C:\runGTAP375\GeoAI\basedata.har'.)
+ Reading VTMFSD(MARG_COMM,TRAD_COMM,REG,REG)
+ (Read real array, size 1x10x10x10, header "VTWR".)
+  Formula for 'VTFSD'
+  Formula for 'VTMUSE'
+  Formula for 'VTMPROV'
+  Formula for 'VTRPROV'
+  Formula for 'VT'
+  Formula for 'VTMUSESHR'
+  Formula for 'VTMUSESHR'
+  Formula for 'VTSUPPSHR'
+  Formula for 'VTSUPPSHR'
+  Formula for 'VTUSE'
+  Formula for 'VTFSD_MSH'
+  Formula for 'VTFSD_MSH'
+  Formula for 'VIWSCOST'
+  Formula for 'FOBSHR'
+  Formula for 'TRNSHR'
+  Formula for 'XSHRPRIV'
+  Formula for 'XSHRGOV'
+  Formula for 'XSHRSAVE'
+  Formula for 'TINC'
+  Formula for 'REVSHR'
+ (Opened, as header, existing file 'C:\runGTAP375\GeoAI\default.prm'.)
+ Reading ETRAE(ENDW_COMM)
+ (Read real array, size 8, header "ETRE".)
+  Formula for 'FY'
+  Formula for 'INDTAX'
+ (Opened, as header, existing file 'C:\runGTAP375\GeoAI\basedata.har'.)
+ Reading DPARSUM(REG)
+ (Read real array, size 10, header "DPSM".)
+  Formula for 'UTILELAS'
+  Formula for 'DPARPRIV'
+  Formula for 'DPARGOV'
+  Formula for 'DPARSAVE'
+  Formula for 'UTILPRIV'
+  Formula for 'UTILGOV'
+  Formula for 'UTILSAVE'
+  Formula for 'SHRDFM'
+  Formula for 'SHRDPM'
+  Formula for 'SHRDGM'
+  Formula for 'SHRDM'
+  Formula for 'SHRST'
+  Formula for 'SHRXMD'
+  Formula for 'VIM'
+  Formula for 'SHRIFM'
+  Formula for 'SHRIPM'
+  Formula for 'SHRIGM'
+  Formula for 'SHREM'
+  Formula for 'VXW'
+  Formula for 'VXW'
+  Formula for 'VXWREGION'
+  Formula for 'VIW'
+  Formula for 'VIWREGION'
+  Formula for 'VENDWREG'
+  Formula for 'VENDWWLD'
+  Formula for 'GDP'
+  Formula for 'VXWCOMMOD'
+  Formula for 'VXWLD'
+  Formula for 'VIWCOMMOD'
+  Formula for 'PW_PM'
+  Formula for 'VOW'
+  Formula for 'VOW'
+  Formula for 'VWOW'
+  Formula for 'VWOU'
+  Formula for 'TBAL'
+  Formula for 'INCOMEEV'
+  Formula for 'UTILPRIVEV'
+  Formula for 'UTILGOVEV'
+  Formula for 'UTILSAVEEV'
+  Formula for 'VPAEV'
+  Formula for 'VPAREGEV'
+  Formula for 'CONSHREV'
+  Formula for 'EYEV'
+  Formula for 'UELASPRIVEV'
+  Formula for 'XWCONSHREV'
+  Formula for 'PRIVEXPEV'
+  Formula for 'GOVEXPEV'
+  Formula for 'SAVEEV'
+  Formula for 'XSHRPRIVEV'
+  Formula for 'XSHRGOVEV'
+  Formula for 'XSHRSAVEEV'
+  Formula for 'UTILELASEV'
+  Formula for 'EVSCALFACT'
+  Formula for 'VTMD'
+  Formula for 'SX_IR'
+  Formula for 'SX_IR'
+  Formula for 'VTICOMM'
+  Formula for 'VIWDIRALL'
+  Formula for 'VIWDIRALL'
+  Formula for 'VIWDATOT'
+  Formula for 'SM_IR'
+  Formula for 'SX_IRS'
+  Formula for 'SX_IRS'
+  Formula for 'SXT_IR'
+  Formula for 'SM_IRS'
+  Formula for 'SMT_IR'
+  Formula for 'SW_IR'
+  Formula for 'SW_IR'
+  Formula for 'SW_I'
+  Formula for 'SW_I'
+  (Checking that values of 'VDGA' are in the required range.)
+  (Checking that values of 'VDGM' are in the required range.)
+  (Checking that values of 'VIGA' are in the required range.)
+  (Checking that values of 'VIGM' are in the required range.)
+  (Checking that values of 'VDPA' are in the required range.)
+  (Checking that values of 'VDPM' are in the required range.)
+  (Checking that values of 'VIPA' are in the required range.)
+  (Checking that values of 'VIPM' are in the required range.)
+  (Checking that values of 'EVOA' are in the required range.)
+  (Checking that values of 'EVFA' are in the required range.)
+  (Checking that values of 'VDFA' are in the required range.)
+  (Checking that values of 'VIFA' are in the required range.)
+  (Checking that values of 'VFM' are in the required range.)
+  (Checking that values of 'VIFM' are in the required range.)
+  (Checking that values of 'VDFM' are in the required range.)
+  (Checking that values of 'VDEP' are in the required range.)
+  (Checking that values of 'VIMS' are in the required range.)
+  (Checking that values of 'VIWS' are in the required range.)
+  (Checking that values of 'VXWD' are in the required range.)
+  (Checking that values of 'VXMD' are in the required range.)
+  (Checking that values of 'VST' are in the required range.)
+  (Checking that values of 'VKB' are in the required range.)
+  (Checking that values of 'VTMFSD' are in the required range.)
+  Formula for 'C00171'
+  Formula for 'C00172'
+  Formula for 'C00173'
+  Formula for 'C00174'
+  Formula for 'C00175'
+  Formula for 'C00176'
+  Formula for 'C00177'
+  Formula for 'C00178'
+  Formula for 'C00179'
+  Formula for 'C00180'
+  Formula for 'C00181'
+  Formula for 'C00182'
+  Formula for 'C00183'
+  Formula for 'C00184'
+  Formula for 'C00185'
+  Formula for 'C00186'
+  Formula for 'C00187'
+  Formula for 'C00188'
+  Formula for 'C00189'
+  Formula for 'C00190'
+  Formula for 'C00191'
+  Formula for 'C00192'
+  Formula for 'C00193'
+  Formula for 'C00194'
+  Formula for 'C00195'
+  Formula for 'C00196'
+  Formula for 'C00197'
+  Formula for 'C00198'
+  Formula for 'C00199'
+  Formula for 'C00200'
+  Formula for 'C00201'
+  Formula for 'C00202'
+  Formula for 'C00203'
+  Formula for 'C00204'
+  Formula for 'C00205'
+  Formula for 'C00206'
+  Formula for 'C00207'
+  Formula for 'C00208'
+  Formula for 'C00209'
+  Formula for 'C00210'
+  Formula for 'C00211'
+  Formula for 'C00212'
+  Formula for 'C00213'
+  Formula for 'C00214'
+  Formula for 'C00215'
+  Formula for 'C00216'
+  Formula for 'C00217'
+  Formula for 'C00218'
+  Formula for 'C00219'
+  Formula for 'C00220'
+  Formula for 'C00221'
+  Formula for 'C00222'
+  Formula for 'C00223'
+  Formula for 'C00224'
+  Formula for 'C00225'
+  Formula for 'C00226'
+  Formula for 'C00227'
+  Formula for 'C00228'
+  Formula for 'C00229'
+  Formula for 'C00230'
+  Formula for 'C00231'
+  Formula for 'C00232'
+  Formula for 'C00233'
+  Formula for 'C00234'
+  Formula for 'C00235'
+  Formula for 'C00236'
+  Formula for 'C00237'
+  Formula for 'C00238'
+  Formula for 'C00239'
+  Formula for 'C00240'
+  Formula for 'C00241'
+  Formula for 'C00242'
+  Formula for 'C00243'
+  Formula for 'C00244'
+  Formula for 'C00245'
+  Formula for 'C00246'
+  Formula for 'C00247'
+  Formula for 'C00248'
+  Formula for 'C00249'
+  Formula for 'C00250'
+  Formula for 'C00251'
+  Formula for 'C00252'
+  Formula for 'C00253'
+  Formula for 'C00254'
+  Formula for 'C00255'
+  Formula for 'C00256'
+  Formula for 'C00257'
+  Formula for 'C00258'
+  Formula for 'C00259'
+  Formula for 'C00260'
+  Formula for 'C00261'
+  Formula for 'C00262'
+  Formula for 'C00263'
+  Formula for 'C00264'
+  Formula for 'C00265'
+  Formula for 'C00266'
+  Formula for 'C00267'
+  Formula for 'C00268'
+  Formula for 'C00269'
+  Formula for 'C00270'
+  Formula for 'C00271'
+  Formula for 'C00272'
+  Formula for 'C00273'
+  Formula for 'C00274'
+  Formula for 'C00275'
+  Formula for 'C00276'
+  Formula for 'C00277'
+  Formula for 'C00278'
+  Formula for 'C00279'
+  Formula for 'C00280'
+  Formula for 'C00281'
+  Formula for 'C00282'
+  Formula for 'C00283'
+  Formula for 'C00284'
+  Formula for 'C00285'
+  Formula for 'C00286'
+  Formula for 'C00287'
+  Formula for 'C00288'
+  Formula for 'C00289'
+  Formula for 'C00290'
+  Formula for 'C00291'
+  Formula for 'C00292'
+  Formula for 'C00293'
+  Formula for 'C00294'
+  Formula for 'C00295'
+  Formula for 'C00296'
+  Formula for 'C00297'
+  Formula for 'C00298'
+  Formula for 'C00299'
+  Formula for 'C00300'
+  Formula for 'C00301'
+  Formula for 'C00302'
+  Formula for 'C00303'
+  Formula for 'C00304'
+  Formula for 'C00305'
+  Formula for 'C00306'
+  Formula for 'C00307'
+  Formula for 'C00308'
+ [CPU for reads, formulas etc is 0.05 seconds.]
+ Elapsed time for reads, formulas etc is: less than one second.
+ 
+  (Writing the Solution Coefficients (SLC) file.)
+ 
+  Total memory currently used for all arrays is approximately 5.51 megabytes.
+  [This includes memory relating to current values:    MMNZ=50000, MMNZ1=50000 and MMNZ2=50000.]
+  [Add about 5-10 megabytes for the memory used by the code.]
+  [Total memory currently allocated for Coefficients and Updated
+   Coefficients is about        0.2 and        0.0 MB respectively.]
+ 
+  [Starting TGCSM2W submatrices]
+ 
+  Equation 'GOVU'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 90, all on the LHS.)
+     Submatrix for variable 'pim'
+     (Number of nonzeros is 90, all on the LHS.)
+     Submatrix for variable 'yg'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'ug'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'GHHLDDOM'
+     Submatrix for variable 'qgd'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 910, all on the LHS.)
+     Submatrix for variable 'pim'
+     (Number of nonzeros is 900, all on the LHS.)
+     Submatrix for variable 'ug'
+     (Number of nonzeros is 100, all on the LHS.)
+ 
+  Equation 'TGCRATIO'
+     Submatrix for variable 'qgd'
+     (Number of nonzeros is 75, all on the LHS.)
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 81, all on the LHS.)
+     Submatrix for variable 'pim'
+     (Number of nonzeros is 81, all on the LHS.)
+     Submatrix for variable 'y'
+     (Number of nonzeros is 9, all on the LHS.)
+     Submatrix for variable 'ug'
+     (Number of nonzeros is 9, all on the LHS.)
+     Submatrix for variable 'del_taxrgc'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'PHHLDINDEX'
+     Submatrix for variable 'ppriv'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'pp'
+     (Number of nonzeros is 100, all on the LHS.)
+ 
+  Equation 'PRIVATEU'
+     Submatrix for variable 'ppriv'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'yp'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'up'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'UTILELASPRIV'
+     Submatrix for variable 'uepriv'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'yp'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'pp'
+     (Number of nonzeros is 100, all on the LHS.)
+ 
+  Equation 'TPDSHIFT'
+     Submatrix for variable 'atpd'
+     (Number of nonzeros is 100, all on the LHS.)
+ 
+  Equation 'TPMSHIFT'
+     Submatrix for variable 'atpm'
+     (Number of nonzeros is 100, all on the LHS.)
+ 
+  Equation 'TPCRATIO'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'pim'
+     (Number of nonzeros is 99, all on the LHS.)
+     Submatrix for variable 'qpd'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'y'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'yp'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'del_taxrpc'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'pp'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'atpd'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'atpm'
+     (Number of nonzeros is 100, all on the LHS.)
+ 
+  Equation 'PCOMPRICE'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'pim'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'pp'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'atpd'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'atpm'
+     (Number of nonzeros is 100, all on the LHS.)
+ 
+  Equation 'PHHLDDOM'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'qpd'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'yp'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'pp'
+     (Number of nonzeros is 1000, all on the LHS.)
+     Submatrix for variable 'atpd'
+     (Number of nonzeros is 100, all on the LHS.)
+ 
+  Equation 'TIURATIO'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'pim'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'ps'
+     (Number of nonzeros is 0.)
+     Submatrix for variable 'qo'
+     (Number of nonzeros is 110, all on the LHS.)
+     Submatrix for variable 'qfd'
+     (Number of nonzeros is 1081, all on the LHS.)
+     Submatrix for variable 'y'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'del_taxriu'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'INDDOM'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 1100, all on the LHS.)
+     Submatrix for variable 'pim'
+     (Number of nonzeros is 1100, all on the LHS.)
+     Submatrix for variable 'ps'
+     (Number of nonzeros is 0.)
+     Submatrix for variable 'qo'
+     (Number of nonzeros is 1100, all on the LHS.)
+     Submatrix for variable 'qfd'
+     (Number of nonzeros is 1100, all on the LHS.)
+ 
+  Equation 'MPFACTPRICE'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 660, all on the LHS.)
+     Submatrix for variable 'pfe'
+     (Number of nonzeros is 660, all on the LHS.)
+ 
+  Equation 'SPFACTPRICE'
+     Submatrix for variable 'pfe'
+     (Number of nonzeros is 220, all on the LHS.)
+     Submatrix for variable 'pmes'
+     (Number of nonzeros is 220, all on the LHS.)
+ 
+  Equation 'TFURATIO'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 60, all on the LHS.)
+     Submatrix for variable 'qfe'
+     (Number of nonzeros is 620, all on the LHS.)
+     Submatrix for variable 'pmes'
+     (Number of nonzeros is 20, all on the LHS.)
+     Submatrix for variable 'y'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'del_taxrfu'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'ENDWDEMAND'
+     Submatrix for variable 'ps'
+     (Number of nonzeros is 0.)
+     Submatrix for variable 'qo'
+     (Number of nonzeros is 880, all on the LHS.)
+     Submatrix for variable 'pfe'
+     (Number of nonzeros is 5780, all on the LHS.)
+     Submatrix for variable 'qfe'
+     (Number of nonzeros is 880, all on the LHS.)
+ 
+  Equation 'OUTPUTPRICES'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 110, all on the LHS.)
+     Submatrix for variable 'ps'
+     (Number of nonzeros is 110, all on the LHS.)
+ 
+  Equation 'TOUTRATIO'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'qo'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'y'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'del_taxrout'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'ZEROPROFITS'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 1090, all on the LHS.)
+     Submatrix for variable 'pim'
+     (Number of nonzeros is 1090, all on the LHS.)
+     Submatrix for variable 'ps'
+     (Number of nonzeros is 110, all on the LHS.)
+     Submatrix for variable 'pfe'
+     (Number of nonzeros is 620, all on the LHS.)
+ 
+  Equation 'KAPSVCES'
+     Submatrix for variable 'qo'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'ksvces'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'KAPRENTAL'
+     Submatrix for variable 'ps'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'rental'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'CAPGOODS'
+     Submatrix for variable 'qo'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'qcgds'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'PRCGOODS'
+     Submatrix for variable 'ps'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'pcgds'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'KBEGINNING'
+     Submatrix for variable 'kb'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'ksvces'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'KEND'
+     Submatrix for variable 'kb'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'ke'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'qcgds'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'RORCURRENT'
+     Submatrix for variable 'pcgds'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'rental'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'rorc'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'ROREXPECTED'
+     Submatrix for variable 'kb'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'ke'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'rore'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'rorc'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'BALDWIN'
+     Submatrix for variable 'qo'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'qcgds'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'RORGLOBAL'
+     Submatrix for variable 'kb'
+     (Number of nonzeros is 0.)
+     Submatrix for variable 'globalcgds'
+     (Number of nonzeros is 0.)
+     Submatrix for variable 'rore'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'qcgds'
+     (Number of nonzeros is 0.)
+     Submatrix for variable 'rorg'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'GLOBALINV'
+     Submatrix for variable 'kb'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'globalcgds'
+     (Number of nonzeros is 1, all on the LHS.)
+     Submatrix for variable 'rore'
+     (Number of nonzeros is 0.)
+     Submatrix for variable 'qcgds'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'rorg'
+     (Number of nonzeros is 0.)
+ 
+  Equation 'PRICGDS'
+     Submatrix for variable 'pcgds'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'pcgdswld'
+     (Number of nonzeros is 1, all on the LHS.)
+ 
+  Equation 'SAVEPRICE'
+     Submatrix for variable 'psave'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'pcgds'
+     (Number of nonzeros is 100, all on the LHS.)
+ 
+  Equation 'EXPRICES'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 1000, all on the LHS.)
+     Submatrix for variable 'pfob'
+     (Number of nonzeros is 1000, all on the LHS.)
+ 
+  Equation 'TEXPRATIO'
+     Submatrix for variable 'qxs'
+     (Number of nonzeros is 471, all on the LHS.)
+     Submatrix for variable 'pfob'
+     (Number of nonzeros is 471, all on the LHS.)
+     Submatrix for variable 'y'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'del_taxrexp'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'DPRICEIMP'
+     Submatrix for variable 'pim'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'pfob'
+     (Number of nonzeros is 1000, all on the LHS.)
+     Submatrix for variable 'pt'
+     (Number of nonzeros is 50, all on the LHS.)
+ 
+  Equation 'PRICETGT'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'pim'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'pr'
+     (Number of nonzeros is 100, all on the LHS.)
+ 
+  Equation 'IMPORTDEMAND'
+     Submatrix for variable 'pim'
+     (Number of nonzeros is 1000, all on the LHS.)
+     Submatrix for variable 'qxs'
+     (Number of nonzeros is 1000, all on the LHS.)
+     Submatrix for variable 'pfob'
+     (Number of nonzeros is 1000, all on the LHS.)
+     Submatrix for variable 'qim'
+     (Number of nonzeros is 1000, all on the LHS.)
+     Submatrix for variable 'pt'
+     (Number of nonzeros is 490, all on the LHS.)
+ 
+  Equation 'TIMPRATIO'
+     Submatrix for variable 'qxs'
+     (Number of nonzeros is 490, all on the LHS.)
+     Submatrix for variable 'pfob'
+     (Number of nonzeros is 490, all on the LHS.)
+     Submatrix for variable 'y'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'del_taxrimp'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'pt'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'TRANS_DEMAND'
+     Submatrix for variable 'qxs'
+     (Number of nonzeros is 490, all on the LHS.)
+     Submatrix for variable 'qtm'
+     (Number of nonzeros is 1, all on the LHS.)
+ 
+  Equation 'PTRANSPORT'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'pt'
+     (Number of nonzeros is 1, all on the LHS.)
+ 
+  Equation 'TRANSVCES'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'qst'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'qtm'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'pt'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'FACTORINCPRICES'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 80, all on the LHS.)
+     Submatrix for variable 'ps'
+     (Number of nonzeros is 80, all on the LHS.)
+ 
+  Equation 'TINCRATIO'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 80, all on the LHS.)
+     Submatrix for variable 'qo'
+     (There are 10 nonzeros on the LHS and 2 corresponding to shocks.)
+     Submatrix for variable 'y'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'del_taxrinc'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'ENDW_PRICE'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 20, all on the LHS.)
+     Submatrix for variable 'pmes'
+     (Number of nonzeros is 20, all on the LHS.)
+ 
+  Equation 'ENDW_SUPPLY'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 220, all on the LHS.)
+     Submatrix for variable 'qo'
+     (Number of nonzeros is 0.)
+     Submatrix for variable 'pmes'
+     (Number of nonzeros is 220, all on the LHS.)
+     Submatrix for variable 'qoes'
+     (Number of nonzeros is 220, all on the LHS.)
+ 
+  Equation 'FACTORINCOME'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 80, all on the LHS.)
+     Submatrix for variable 'qo'
+     (There are 10 nonzeros on the LHS and 2 corresponding to shocks.)
+     Submatrix for variable 'kb'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'pcgds'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'fincome'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'DINDTAXRATIO'
+     Submatrix for variable 'del_taxrgc'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'del_taxrpc'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'del_taxriu'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'del_taxrfu'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'del_taxrout'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'del_taxrexp'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'del_taxrimp'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'del_indtaxr'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'DTAXRATIO'
+     Submatrix for variable 'del_taxrgc'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'del_taxrpc'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'del_taxriu'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'del_taxrfu'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'del_taxrout'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'del_taxrexp'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'del_taxrimp'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'del_taxrinc'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'del_ttaxr'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'REGIONALINCOME'
+     Submatrix for variable 'y'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'fincome'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'del_indtaxr'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'DPARAV'
+     Submatrix for variable 'dpav'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'UTILITELASTIC'
+     Submatrix for variable 'uepriv'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'uelas'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'dpav'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'PRIVCONSEXP'
+     Submatrix for variable 'y'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'uepriv'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'yp'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'uelas'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'GOVCONSEXP'
+     Submatrix for variable 'y'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'yg'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'uelas'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'SAVING'
+     Submatrix for variable 'psave'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'qsave'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'y'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'uelas'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'PRICEINDEXREG'
+     Submatrix for variable 'psave'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 90, all on the LHS.)
+     Submatrix for variable 'pim'
+     (Number of nonzeros is 90, all on the LHS.)
+     Submatrix for variable 'ppriv'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'p'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'UTILITY'
+     Submatrix for variable 'y'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'p'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'u'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'DISTPARSUM'
+     Submatrix for variable 'dpsum'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'MKTCLDOM'
+     Submatrix for variable 'qgd'
+     (Number of nonzeros is 90, all on the LHS.)
+     Submatrix for variable 'qpd'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'qfd'
+     (Number of nonzeros is 1090, all on the LHS.)
+     Submatrix for variable 'qds'
+     (Number of nonzeros is 100, all on the LHS.)
+ 
+  Equation 'MKTCLTRD_MARG'
+     Submatrix for variable 'qo'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'qxs'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'qst'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'qds'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'MKTCLTRD_NMRG'
+     Submatrix for variable 'qo'
+     (Number of nonzeros is 90, all on the LHS.)
+     Submatrix for variable 'qxs'
+     (Number of nonzeros is 900, all on the LHS.)
+     Submatrix for variable 'qds'
+     (Number of nonzeros is 90, all on the LHS.)
+ 
+  Equation 'MKTCLIMP'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 820, all on the LHS.)
+     Submatrix for variable 'pim'
+     (Number of nonzeros is 820, all on the LHS.)
+     Submatrix for variable 'ps'
+     (Number of nonzeros is 0.)
+     Submatrix for variable 'qo'
+     (Number of nonzeros is 1090, all on the LHS.)
+     Submatrix for variable 'ug'
+     (Number of nonzeros is 90, all on the LHS.)
+     Submatrix for variable 'yp'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'qim'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'pp'
+     (Number of nonzeros is 1000, all on the LHS.)
+     Submatrix for variable 'atpm'
+     (Number of nonzeros is 100, all on the LHS.)
+ 
+  Equation 'MKTCLENDWM'
+     Submatrix for variable 'qo'
+     (There are 10 nonzeros on the LHS and 2 corresponding to shocks.)
+     Submatrix for variable 'qfe'
+     (Number of nonzeros is 600, all on the LHS.)
+ 
+  Equation 'MKTCLENDWS'
+     Submatrix for variable 'qfe'
+     (Number of nonzeros is 220, all on the LHS.)
+     Submatrix for variable 'qoes'
+     (Number of nonzeros is 220, all on the LHS.)
+ 
+  Equation 'WALRAS_S'
+     Submatrix for variable 'globalcgds'
+     (Number of nonzeros is 1, all on the LHS.)
+     Submatrix for variable 'pcgdswld'
+     (Number of nonzeros is 1, all on the LHS.)
+     Submatrix for variable 'walras_sup'
+     (Number of nonzeros is 1, all on the LHS.)
+ 
+  Equation 'WALRAS_D'
+     Submatrix for variable 'psave'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'qsave'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'walras_dem'
+     (Number of nonzeros is 1, all on the LHS.)
+ 
+  Equation 'WALRAS'
+     Submatrix for variable 'walras_sup'
+     (Number of nonzeros is 1, all on the LHS.)
+     Submatrix for variable 'walras_dem'
+     (Number of nonzeros is 1, all on the LHS.)
+     Submatrix for variable 'walraslack'
+     (Number of nonzeros is 1, all on the LHS.)
+ 
+  Equation 'REALRETURN'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 80, all on the LHS.)
+     Submatrix for variable 'ppriv'
+     (Number of nonzeros is 80, all on the LHS.)
+     Submatrix for variable 'pfactreal'
+     (Number of nonzeros is 80, all on the LHS.)
+ 
+  Equation 'PRIMFACTPR'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 80, all on the LHS.)
+     Submatrix for variable 'pfactor'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'PRIMFACTPRWLD'
+     Submatrix for variable 'pfactor'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'REGSUPRICE'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'pfob'
+     (Number of nonzeros is 1000, all on the LHS.)
+     Submatrix for variable 'psw'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'REGDEMPRICE'
+     Submatrix for variable 'pfob'
+     (Number of nonzeros is 1000, all on the LHS.)
+     Submatrix for variable 'pt'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'pdw'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'TOTeq'
+     Submatrix for variable 'psw'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'pdw'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'tot'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'VGDP_r'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 90, all on the LHS.)
+     Submatrix for variable 'pim'
+     (Number of nonzeros is 90, all on the LHS.)
+     Submatrix for variable 'pcgds'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'qxs'
+     (Number of nonzeros is 1840, all on the LHS.)
+     Submatrix for variable 'pfob'
+     (Number of nonzeros is 1812, all on the LHS.)
+     Submatrix for variable 'qst'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'ug'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'yp'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'pp'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'qcgds'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'pt'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'vgdp'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'PGDP_r'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 90, all on the LHS.)
+     Submatrix for variable 'pim'
+     (Number of nonzeros is 90, all on the LHS.)
+     Submatrix for variable 'pcgds'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'pfob'
+     (Number of nonzeros is 1812, all on the LHS.)
+     Submatrix for variable 'pp'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'pt'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'pgdp'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'QGDP_r'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 90, all on the LHS.)
+     Submatrix for variable 'pim'
+     (Number of nonzeros is 90, all on the LHS.)
+     Submatrix for variable 'qxs'
+     (Number of nonzeros is 1840, all on the LHS.)
+     Submatrix for variable 'qst'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'ug'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'yp'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'pp'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'qcgds'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'qgdp'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'VREGEX_ir_MARG'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'qxs'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'pfob'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'qst'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'vxwfob'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'VREGEX_ir_NMRG'
+     Submatrix for variable 'qxs'
+     (Number of nonzeros is 900, all on the LHS.)
+     Submatrix for variable 'pfob'
+     (Number of nonzeros is 900, all on the LHS.)
+     Submatrix for variable 'vxwfob'
+     (Number of nonzeros is 90, all on the LHS.)
+ 
+  Equation 'VREGEX_r'
+     Submatrix for variable 'vxwfob'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'vxwreg'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'VWLDEX_i'
+     Submatrix for variable 'vxwfob'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'vxwcom'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'VWLDEX'
+     Submatrix for variable 'vxwreg'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'vxwwld'
+     (Number of nonzeros is 1, all on the LHS.)
+ 
+  Equation 'VREGIM_is'
+     Submatrix for variable 'qxs'
+     (Number of nonzeros is 1000, all on the LHS.)
+     Submatrix for variable 'pfob'
+     (Number of nonzeros is 1000, all on the LHS.)
+     Submatrix for variable 'pt'
+     (Number of nonzeros is 50, all on the LHS.)
+     Submatrix for variable 'viwcif'
+     (Number of nonzeros is 100, all on the LHS.)
+ 
+  Equation 'VREGIM_s'
+     Submatrix for variable 'viwcif'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'viwreg'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'VWLDIM_i'
+     Submatrix for variable 'viwcif'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'viwcom'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'VWLDOUT'
+     Submatrix for variable 'qo'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'pxw'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'valuew'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'VWLDOUTUSE'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 820, all on the LHS.)
+     Submatrix for variable 'pim'
+     (Number of nonzeros is 820, all on the LHS.)
+     Submatrix for variable 'ps'
+     (Number of nonzeros is 0.)
+     Submatrix for variable 'qo'
+     (Number of nonzeros is 1090, all on the LHS.)
+     Submatrix for variable 'ug'
+     (Number of nonzeros is 90, all on the LHS.)
+     Submatrix for variable 'yp'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'pp'
+     (Number of nonzeros is 1000, all on the LHS.)
+     Submatrix for variable 'valuewu'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'PREGEX_ir_MARG'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'pfob'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'pxw'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'PREGEX_ir_NMRG'
+     Submatrix for variable 'pfob'
+     (Number of nonzeros is 900, all on the LHS.)
+     Submatrix for variable 'pxw'
+     (Number of nonzeros is 90, all on the LHS.)
+ 
+  Equation 'PREGEX_r'
+     Submatrix for variable 'pxw'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'pxwreg'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'PWLDEX_i'
+     Submatrix for variable 'pxw'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'pxwcom'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'PWLDEX'
+     Submatrix for variable 'pxwreg'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'pxwwld'
+     (Number of nonzeros is 1, all on the LHS.)
+ 
+  Equation 'PREGIM_is'
+     Submatrix for variable 'pfob'
+     (Number of nonzeros is 1000, all on the LHS.)
+     Submatrix for variable 'pt'
+     (Number of nonzeros is 50, all on the LHS.)
+     Submatrix for variable 'piw'
+     (Number of nonzeros is 100, all on the LHS.)
+ 
+  Equation 'PREGIM_s'
+     Submatrix for variable 'piw'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'piwreg'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'PWLDIM_i'
+     Submatrix for variable 'piw'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'piwcom'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'PWLDOUT'
+     Submatrix for variable 'pxw'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'pw'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'PWLDUSE'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'pim'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'pp'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'pwu'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'QREGEX_ir_MARG'
+     Submatrix for variable 'qxs'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'qst'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'qxw'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'QREGEX_ir_NMRG'
+     Submatrix for variable 'qxs'
+     (Number of nonzeros is 900, all on the LHS.)
+     Submatrix for variable 'qxw'
+     (Number of nonzeros is 90, all on the LHS.)
+ 
+  Equation 'QREGEX_r'
+     Submatrix for variable 'qxw'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'qxwreg'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'QWLDEX_i'
+     Submatrix for variable 'qxw'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'qxwcom'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'QWLDEX'
+     Submatrix for variable 'qxwreg'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'qxwwld'
+     (Number of nonzeros is 1, all on the LHS.)
+ 
+  Equation 'QREGIM_is'
+     Submatrix for variable 'qxs'
+     (Number of nonzeros is 1000, all on the LHS.)
+     Submatrix for variable 'qiw'
+     (Number of nonzeros is 100, all on the LHS.)
+ 
+  Equation 'QREGIM_s'
+     Submatrix for variable 'qiw'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'qiwreg'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'QWLDIM_i'
+     Submatrix for variable 'qiw'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'qiwcom'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'QWLDOUT'
+     Submatrix for variable 'qo'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'qow'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'QWLDOUTU'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 810, all on the LHS.)
+     Submatrix for variable 'pim'
+     (Number of nonzeros is 810, all on the LHS.)
+     Submatrix for variable 'ps'
+     (Number of nonzeros is 0.)
+     Submatrix for variable 'qo'
+     (Number of nonzeros is 1090, all on the LHS.)
+     Submatrix for variable 'ug'
+     (Number of nonzeros is 90, all on the LHS.)
+     Submatrix for variable 'yp'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'pp'
+     (Number of nonzeros is 1000, all on the LHS.)
+     Submatrix for variable 'qowu'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'TRADEBAL_i'
+     Submatrix for variable 'vxwfob'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'viwcif'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'DTBALi'
+     (Number of nonzeros is 100, all on the LHS.)
+ 
+  Equation 'TRADEBALANCE'
+     Submatrix for variable 'vxwreg'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'viwreg'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'DTBAL'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'DTBALRATIO'
+     Submatrix for variable 'y'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'DTBAL'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'DTBALR'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'GOVUSHD'
+     Submatrix for variable 'ugev'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'ygev'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'PRIVDMNDSEV'
+     Submatrix for variable 'ypev'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'qpev'
+     (Number of nonzeros is 100, all on the LHS.)
+ 
+  Equation 'PRIVATEUEV'
+     Submatrix for variable 'upev'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'ypev'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'UTILELASPRIVEV'
+     Submatrix for variable 'ueprivev'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'ypev'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'qpev'
+     (Number of nonzeros is 100, all on the LHS.)
+ 
+  Equation 'DPARAVEV'
+     Submatrix for variable 'dpavev'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'UTILITELASTICEV'
+     Submatrix for variable 'uelasev'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'ueprivev'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'dpavev'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'PCONSEXPEV'
+     Submatrix for variable 'uelasev'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'ueprivev'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'yev'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'ypev'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'GOVCONSEXPEV'
+     Submatrix for variable 'uelasev'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'yev'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'ygev'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'SAVINGEV'
+     Submatrix for variable 'uelasev'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'yev'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'ysaveev'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'SAVEUEV'
+     Submatrix for variable 'qsaveev'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'ysaveev'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'INCOME_EQUIV'
+     Submatrix for variable 'u'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'yev'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'EVREG'
+     Submatrix for variable 'yev'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'EV'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'EVWLD'
+     Submatrix for variable 'EV'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'WEV'
+     (Number of nonzeros is 1, all on the LHS.)
+ 
+  Equation 'EV_DECOMPOSITION'
+     Submatrix for variable 'psave'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'qgd'
+     (Number of nonzeros is 75, all on the LHS.)
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'pim'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'qpd'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'ps'
+     (Number of nonzeros is 0.)
+     Submatrix for variable 'qo'
+     (There are 120 nonzeros on the LHS and 2 corresponding to shocks.)
+     Submatrix for variable 'qfe'
+     (Number of nonzeros is 620, all on the LHS.)
+     Submatrix for variable 'qfd'
+     (Number of nonzeros is 1081, all on the LHS.)
+     Submatrix for variable 'kb'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'pcgds'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'qxs'
+     (Number of nonzeros is 922, all on the LHS.)
+     Submatrix for variable 'pfob'
+     (Number of nonzeros is 1800, all on the LHS.)
+     Submatrix for variable 'ug'
+     (Number of nonzeros is 9, all on the LHS.)
+     Submatrix for variable 'yp'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'pp'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'atpm'
+     (Number of nonzeros is 99, all on the LHS.)
+     Submatrix for variable 'pt'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'EV_ALT'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'WORLDEV'
+     Submatrix for variable 'EV_ALT'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'WEV_ALT'
+     (Number of nonzeros is 1, all on the LHS.)
+ 
+  Equation 'CNT_WEV_dpar'
+     Submatrix for variable 'CNTdpar'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'CONT_EV_pop'
+     Submatrix for variable 'CNTpopr'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'CONT_EV_alleffir_E'
+     Submatrix for variable 'qo'
+     (There are 10 nonzeros on the LHS and 2 corresponding to shocks.)
+     Submatrix for variable 'qfe'
+     (Number of nonzeros is 620, all on the LHS.)
+     Submatrix for variable 'CNTalleffir'
+     (Number of nonzeros is 80, all on the LHS.)
+ 
+  Equation 'CONT_EV_alleffir_T'
+     Submatrix for variable 'qgd'
+     (Number of nonzeros is 75, all on the LHS.)
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 668, all on the LHS.)
+     Submatrix for variable 'pim'
+     (Number of nonzeros is 668, all on the LHS.)
+     Submatrix for variable 'qpd'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'ps'
+     (Number of nonzeros is 0.)
+     Submatrix for variable 'qo'
+     (Number of nonzeros is 1068, all on the LHS.)
+     Submatrix for variable 'qfd'
+     (Number of nonzeros is 1081, all on the LHS.)
+     Submatrix for variable 'qxs'
+     (Number of nonzeros is 922, all on the LHS.)
+     Submatrix for variable 'ug'
+     (Number of nonzeros is 71, all on the LHS.)
+     Submatrix for variable 'yp'
+     (Number of nonzeros is 99, all on the LHS.)
+     Submatrix for variable 'pp'
+     (Number of nonzeros is 990, all on the LHS.)
+     Submatrix for variable 'atpm'
+     (Number of nonzeros is 99, all on the LHS.)
+     Submatrix for variable 'CNTalleffir'
+     (Number of nonzeros is 100, all on the LHS.)
+ 
+  Equation 'CNT_EV_cgdsr'
+     Submatrix for variable 'psave'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'pcgds'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'pxwwld'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'CNTcgdsr'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'CONT_EV_endwr'
+     Submatrix for variable 'qo'
+     (There are 10 nonzeros on the LHS and 2 corresponding to shocks.)
+     Submatrix for variable 'kb'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'CNTendwr'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'CONT_EV_endwir'
+     Submatrix for variable 'qo'
+     (There are 10 nonzeros on the LHS and 2 corresponding to shocks.)
+     Submatrix for variable 'CNTendwir'
+     (Number of nonzeros is 80, all on the LHS.)
+ 
+  Equation 'CONT_EV_techr'
+     Submatrix for variable 'CNTtechr'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'CONT_EV_tech_aor'
+     Submatrix for variable 'CNTtech_aor'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'CONT_EV_tech_afer'
+     Submatrix for variable 'CNTtech_afer'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'CONT_EV_tech_avar'
+     Submatrix for variable 'CNTtech_avar'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'CONT_EV_tech_afr'
+     Submatrix for variable 'CNTtech_afr'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'CONT_EV_tech_atrr'
+     Submatrix for variable 'CNTtech_atrr'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'CONT_EV_tech_amsr'
+     Submatrix for variable 'CNTtech_amsr'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'CONT_EV_kbr'
+     Submatrix for variable 'kb'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'CNTkbr'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'EXPPRICE_MARG'
+     Submatrix for variable 'pm'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'pfob'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'px_ir'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'EXPPRICE_NMRG'
+     Submatrix for variable 'pfob'
+     (Number of nonzeros is 900, all on the LHS.)
+     Submatrix for variable 'px_ir'
+     (Number of nonzeros is 90, all on the LHS.)
+ 
+  Equation 'IMPPRICE1_MARG'
+     Submatrix for variable 'pfob'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'pt'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'pm_ir'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'IMPPRICE1_NMRG'
+     Submatrix for variable 'pfob'
+     (Number of nonzeros is 900, all on the LHS.)
+     Submatrix for variable 'pm_ir'
+     (Number of nonzeros is 90, all on the LHS.)
+ 
+  Equation 'WRLDPRICEi'
+     Submatrix for variable 'px_ir'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'px_i'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'WRLDPRICE'
+     Submatrix for variable 'px_i'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'px_'
+     (Number of nonzeros is 1, all on the LHS.)
+ 
+  Equation 'c1_irEQ'
+     Submatrix for variable 'px_i'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'px_'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'c1_ir'
+     (Number of nonzeros is 100, all on the LHS.)
+ 
+  Equation 'c2_irEQ'
+     Submatrix for variable 'px_ir'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'px_i'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'c2_ir'
+     (Number of nonzeros is 100, all on the LHS.)
+ 
+  Equation 'c3_irEQ'
+     Submatrix for variable 'pm_ir'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'px_i'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'c3_ir'
+     (Number of nonzeros is 100, all on the LHS.)
+ 
+  Equation 'c1_rEQ'
+     Submatrix for variable 'c1_ir'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'c1_r'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'c2_rEQ'
+     Submatrix for variable 'c2_ir'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'c2_r'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'c3_rEQ'
+     Submatrix for variable 'c3_ir'
+     (Number of nonzeros is 100, all on the LHS.)
+     Submatrix for variable 'c3_r'
+     (Number of nonzeros is 10, all on the LHS.)
+ 
+  Equation 'TOT2eq'
+     Submatrix for variable 'c1_r'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'c2_r'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'c3_r'
+     (Number of nonzeros is 10, all on the LHS.)
+     Submatrix for variable 'tot2'
+     (Number of nonzeros is 10, all on the LHS.)
+ [CPU for equations is 0.03 seconds.]
+ Elapsed time for equations is: less than one second.
+ [CPU for formulas and equations is 0.12 seconds.]
+ Elapsed time for formulas and equations is: less than one second.
+ 
+  CUMULATIVELY-RETAINED ENDOGENOUS
+  --------------------------------
+  
+ 
+   Total number (of components) chosen to
+    be cumulatively-retained endogenous is 33464.
+  
+ 
+  VERBAL DESCRIPTION IS AS FOLLOWS:
+  
+ Increase supply of US high skill labor only
+ [Solution method is gragg. Steps = 2,4,6. Automatic accuracy.]
+ [CMF file: 17HiSk.cmf]
+ 
+   Total number (of components) chosen to
+    be XAC-retained is 33464.
+  
+ (Opened new binary file 'C:\runGTAP375\work\17HiSk.cdk'.)
+   [Organising LHS into memory - are 90995 nonzeros.]
+ 
+  Total memory currently used for all arrays is approximately 7.35 megabytes.
+  [This includes memory relating to current values:    MMNZ=210368, MMNZ1=210368 and MMNZ2=210368.]
+  [Add about 5-10 megabytes for the memory used by the code.]
+  [Total memory currently allocated for Coefficients and Updated
+   Coefficients is about        0.2 and        0.0 MB respectively.]
+ 
+  (Beginning simulation for pass number 1 of a 3-pass simulation,
+    subinterval 1.)
+ 
+   (Total number of endogenous variables is 9254.)
+   (Total number of nonzero entries 
+    in the left hand side matrix is 90995.)
+  [KSTEPA=1, NPASSA=3]
+  [Completed 0.000000 percent of the whole sim. Subint 1 will do 50.00000.]
+ 
+  (Calculating the LU decomposition.)
+  Karp-Sipser Initialization matched 9154 rows corresponding to 98.92%
+   [CPU time for GPLU analysis is 0.05 seconds.]
+   Elapsed time for  GPLU analysis is: less than one second.
+  [Calling MA48BG.]
+ 
+  Total memory currently used for all arrays is approximately 8.15 megabytes.
+  [This includes memory relating to current values:    MMNZ=315601, MMNZ1=315601 and MMNZ2=210368.]
+  [Add about 5-10 megabytes for the memory used by the code.]
+  [Total memory currently allocated for Coefficients and Updated
+   Coefficients is about        0.2 and        0.0 MB respectively.]
+   [CPU time for MA48B is 0.03 seconds.]
+   Elapsed time for MA48B is: less than one second.
+  (Minimum size of MMNZ and MMNZ1 to allow LU decomposition by MA48 is 225946.)
+  [CPU time for LU decomposition is 0.08 seconds.]
+  Elapsed time for LU decomposition is: less than one second.
+  [CPU time for MA48C/MA28I is 0.00 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Cumulative solution obtained.)
+  [CPU time for MA48C/MA28I is 0.00 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Second cumulative solution obtained.)
+  [CPU time for MA48C/MA28I is 0.02 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Third cumulative solution obtained.)
+ [CPU for simulation is 0.17 seconds.]
+ Elapsed time for simulation is: less than one second.
+ Elapsed time to do up to first solve (this subinterval) is
+   less than one second.
+ 
+  (Beginning the backsolve after pass 1 of this 3-pass calculation.)
+  (Subinterval number 1.)
+  Backsolving for variable 'CNTtech_amsirs using equation 'CONT_EV_tech_amsirs'
+  Backsolving for variable 'CNTtech_afmfdsd using equation 'CONT_EV_tech_afmfdsd'
+  Backsolving for variable 'CNTtech_afijr using equation 'CONT_EV_tech_afijr'
+  Backsolving for variable 'CNTtech_avajr using equation 'CONT_EV_tech_avajr'
+  Backsolving for variable 'CNTtech_afeijr using equation 'CONT_EV_tech_afeijr'
+  Backsolving for variable 'CNTtech_aoir using equation 'CONT_EV_tech_aoir'
+  Backsolving for variable 'CNTtotr using equation 'CONT_EV_totr'
+  Backsolving for variable 'CNTalleffr using equation 'CONT_EV_alleffr'
+  Backsolving for variable 'CNTqimisr using equation 'CONT_EV_qimisr'
+  Backsolving for variable 'CNTqimr using equation 'CONT_EV_qimr'
+  Backsolving for variable 'CNTqxsirs using equation 'CONT_EV_qxsirs'
+  Backsolving for variable 'CNTqxsr using equation 'CONT_EV_qxsr'
+  Backsolving for variable 'CNTqgdir using equation 'CONT_EV_qgdir'
+  Backsolving for variable 'CNTqgdr using equation 'CONT_EV_qgdr'
+  Backsolving for variable 'CNTqgmir using equation 'CONT_EV_qgmir'
+  Backsolving for variable 'CNTqgmr using equation 'CONT_EV_qgmr'
+  Backsolving for variable 'CNTqpdir using equation 'CONT_EV_qpdir'
+  Backsolving for variable 'CNTqpdr using equation 'CONT_EV_qpdr'
+  Backsolving for variable 'CNTqpmir using equation 'CONT_EV_qpmir'
+  Backsolving for variable 'CNTqpmr using equation 'CONT_EV_qpmr'
+  Backsolving for variable 'CNTqfdijr using equation 'CONT_EV_qfdijr'
+  Backsolving for variable 'CNTqfdir using equation 'CONT_EV_qfdir'
+  Backsolving for variable 'CNTqfdr using equation 'CONT_EV_qfdr'
+  Backsolving for variable 'CNTqfmijr using equation 'CONT_EV_qfmijr'
+  Backsolving for variable 'CNTqfmir using equation 'CONT_EV_qfmir'
+  Backsolving for variable 'CNTqfmr using equation 'CONT_EV_qfmr'
+  Backsolving for variable 'CNTqfeijr using equation 'CONT_EV_qfeijr'
+  Backsolving for variable 'CNTqfeir using equation 'CONT_EV_qfeir'
+  Backsolving for variable 'CNTqfer using equation 'CONT_EV_qfer'
+  Backsolving for variable 'CNTqoir using equation 'CONT_EV_qoir'
+  Backsolving for variable 'CNTqor using equation 'CONT_EV_qor'
+  Backsolving for variable 'compvalad using equation 'COMPVALADEQ'
+  Backsolving for variable 'pcif using equation 'FOBCIF'
+  Backsolving for variable 'atmfsd using equation 'TRANSTECHANGE'
+  Backsolving for variable 'ptrans using equation 'TRANSCOSTINDEX'
+  Backsolving for variable 'qtmfsd using equation 'QTRANS_MFSD'
+  Backsolving for variable 'pms using equation 'MKTPRICES'
+  Backsolving for variable 'pva using equation 'VAPRICE'
+  Backsolving for variable 'afe using equation 'AFEWORLD'
+  Backsolving for variable 'qfm using equation 'INDIMP'
+  Backsolving for variable 'pf using equation 'ICOMPRICE'
+  Backsolving for variable 'pfm using equation 'DMNDIPRICES'
+  Backsolving for variable 'pfd using equation 'DMNDDPRICE'
+  Backsolving for variable 'qf using equation 'INTDEMAND'
+  Backsolving for variable 'af using equation 'AFWORLD'
+  Backsolving for variable 'qva using equation 'VADEMAND'
+  Backsolving for variable 'ava using equation 'AVAWORLD'
+  Backsolving for variable 'ao using equation 'AOWORLD'
+  Backsolving for variable 'qpm using equation 'PHHLDAGRIMP'
+  Backsolving for variable 'ppm using equation 'PHHIPRICES'
+  Backsolving for variable 'ppd using equation 'PHHDPRICE'
+  Backsolving for variable 'qp using equation 'PRIVDMNDS'
+  Backsolving for variable 'qgm using equation 'GHHLDAGRIMP'
+  Backsolving for variable 'pg using equation 'GCOMPRICE'
+  Backsolving for variable 'pgm using equation 'GHHIPRICES'
+  Backsolving for variable 'pgd using equation 'GHHDPRICE'
+  Backsolving for variable 'qg using equation 'GOVDMNDS'
+  Backsolving for variable 'pgov using equation 'GPRICEINDEX'
+  [CPU for backsolve is 0.02 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 1 of this 3-pass calculation.)
+  (Subinterval 1.)
+ Update of "VERNUM"
+ Update of "SAVE"
+ Update of "VDGA"
+ Update of "VDGM"
+ Update of "VIGA"
+ Update of "VIGM"
+ Update of "VDPA"
+ Update of "VDPM"
+ Update of "VIPA"
+ Update of "VIPM"
+ Update of "EVOA"
+ Update of "EVFA"
+ Update of "VDFA"
+ Update of "VIFA"
+ Update of "VFM"
+ Update of "VIFM"
+ Update of "VDFM"
+ Update of "VDEP"
+ Update of "VIMS"
+ Update of "VIWS"
+ Update of "VXWD"
+ Update of "VXMD"
+ Update of "VST"
+ Update of "VKB"
+ Update of "VTMFSD"
+ Update of "DPARSUM"
+ Update of "UTILPRIV"
+ Update of "UTILGOV"
+ Update of "UTILSAVE"
+ Update of "INCOMEEV"
+ Update of "UTILPRIVEV"
+ Update of "UTILGOVEV"
+ Update of "UTILSAVEEV"
+ Update of "VPAEV"
+ Update of "PRIVEXPEV"
+ Update of "GOVEXPEV"
+ Update of "SAVEEV"
+ Update of "UTILELASEV"
+ 
+  (Writing the Data Work file.)
+  [CPU for update is 0.00 seconds.]
+  [CPU for step 1 is 0.31 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 1 is: less than one second.
+ 
+  --->  Beginning pass number 2 of 3-pass calculation, subinterval 1.
+  [Copying all updated values for use in this pass.]
+ [CPU for reads, formulas etc is 0.00 seconds.]
+ Elapsed time for reads, formulas etc is: less than one second.
+ 
+  [Starting TGCSM2W submatrices]
+ [CPU for equations is 0.00 seconds.]
+ Elapsed time for equations is: less than one second.
+ [CPU for formulas and equations is 0.00 seconds.]
+ Elapsed time for formulas and equations is: less than one second.
+  (There are now 91013 nonzeros in those parts of
+      the equations calculated for this step.)
+  
+ 
+  (Beginning simulation for pass number 2 of a 3-pass simulation,
+    subinterval 1.)
+   (Total number of nonzero entries 
+    in the left hand side matrix is 91013.)
+  [KSTEPA=2, NPASSA=3]
+  [Have been 1 extra reallocations of MMNZ,MMNZ1. This may be
+    slowing down this sim considerably. A suitable
+    "start with MMNZ = <value> ;" statement
+     may speed things up.]
+   [See Section 32.3 of the GEMPACK Manual, "MMNZ: Allocating memory for the LU
+    decomposition".][TopicID:gpd3.13.3]
+  [Completed 0.000000 percent of the whole sim. Subint 1 will do 50.00000.]
+ 
+  (Calculating the LU decomposition.)
+  Reusing permutations for zero free diagonal
+  Reusing strong connect permutations
+  Failed Reusing pivots in subblock 279 for pivot 2336 out of 5538
+     The pivot elements stability of 0.09438 is less than GPLUHarwellReuseU
+  Only part of previous pivots have been reused
+   [CPU time for GPLU analysis is 0.03 seconds.]
+   Elapsed time for  GPLU analysis is: less than one second.
+  [Calling MA48BG.]
+   [CPU time for MA48B is 0.02 seconds.]
+   Elapsed time for MA48B is: less than one second.
+  (Minimum size of MMNZ and MMNZ1 to allow LU decomposition by MA48 is 225223.)
+  [CPU time for LU decomposition is 0.05 seconds.]
+  Elapsed time for LU decomposition is: less than one second.
+  [CPU time for MA48C/MA28I is 0.00 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Cumulative solution obtained.)
+ [CPU for simulation is 0.06 seconds.]
+ Elapsed time for simulation is: less than one second.
+ 
+  (Beginning the backsolve after pass 2 of this 3-pass calculation.)
+  (Subinterval number 1.)
+  [CPU for backsolve is 0.02 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 2 of this 3-pass calculation.)
+  (Subinterval 1.)
+  [CPU for update is 0.00 seconds.]
+  [CPU for step 2 is 0.08 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 2 is: less than one second.
+ 
+  --->  Beginning pass number 3 of 3-pass calculation, subinterval 1.
+  [Copying all updated values for use in this pass.]
+ [CPU for reads, formulas etc is 0.00 seconds.]
+ Elapsed time for reads, formulas etc is: less than one second.
+ 
+  [Starting TGCSM2W submatrices]
+ [CPU for equations is 0.00 seconds.]
+ Elapsed time for equations is: less than one second.
+ [CPU for formulas and equations is 0.00 seconds.]
+ Elapsed time for formulas and equations is: less than one second.
+  (There are now 91003 nonzeros in those parts of
+      the equations calculated for this step.)
+  
+ 
+  (Beginning simulation for pass number 3 of a 3-pass simulation,
+    subinterval 1.)
+   (Total number of nonzero entries 
+    in the left hand side matrix is 91003.)
+  [KSTEPA=3, NPASSA=3]
+  [Have been 1 extra reallocations of MMNZ,MMNZ1. This may be
+    slowing down this sim considerably. A suitable
+    "start with MMNZ = <value> ;" statement
+     may speed things up.]
+   [See Section 32.3 of the GEMPACK Manual, "MMNZ: Allocating memory for the LU
+    decomposition".][TopicID:gpd3.13.3]
+  [Completed 0.000000 percent of the whole sim. Subint 1 will do 50.00000.]
+ 
+  (Calculating the LU decomposition.)
+  Reusing permutations for zero free diagonal
+  Reusing strong connect permutations
+  Failed Reusing pivots in subblock 279 for pivot 2333 out of 5532
+     The pivot elements stability of 0.09733 is less than GPLUHarwellReuseU
+  Only part of previous pivots have been reused
+   [CPU time for GPLU analysis is 0.05 seconds.]
+   Elapsed time for  GPLU analysis is: less than one second.
+  [Calling MA48BG.]
+   [CPU time for MA48B is 0.02 seconds.]
+   Elapsed time for MA48B is: less than one second.
+  (Minimum size of MMNZ and MMNZ1 to allow LU decomposition by MA48 is 226593.)
+  [CPU time for LU decomposition is 0.06 seconds.]
+  Elapsed time for LU decomposition is: less than one second.
+  [CPU time for MA48C/MA28I is 0.00 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Cumulative solution obtained.)
+ [CPU for simulation is 0.06 seconds.]
+ Elapsed time for simulation is: less than one second.
+ 
+  (Beginning the backsolve after pass 3 of this 3-pass calculation.)
+  (Subinterval number 1.)
+  [CPU for backsolve is 0.02 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 3 of this 3-pass calculation.)
+  (Subinterval 1.)
+ 
+  (Writing the UC5/6/7 file.)
+  [CPU for update is 0.02 seconds.]
+  [CPU for step 3 is 0.09 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 3 is: less than one second.
+ Elapsed time to do after-first-LU-decomp part
+  of this 3-pass calculation is: less than one second.
+ [CPU for all of this 2-step calculation is 0.52 seconds.]
+ Elapsed time for all this 2-step calculation is: less than one second.
+ 
+  --->  Beginning pass number 1 of 5-pass calculation, subinterval 1.
+ [CPU for simulation is 0.00 seconds.]
+ Elapsed time for simulation is: less than one second.
+ 
+  (Beginning the backsolve after pass 1 of this 5-pass calculation.)
+  (Subinterval number 1.)
+ 
+  (Reading pre-sim values from the current SLC file.)
+  [CPU for backsolve is 0.12 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 1 of this 5-pass calculation.)
+  (Subinterval 1.)
+  [CPU for update is 0.00 seconds.]
+  [CPU for step 1 is 0.12 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 1 is: less than one second.
+ 
+  --->  Beginning pass number 2 of 5-pass calculation, subinterval 1.
+  [Copying all updated values for use in this pass.]
+ [CPU for reads, formulas etc is 0.00 seconds.]
+ Elapsed time for reads, formulas etc is: less than one second.
+ 
+  [Starting TGCSM2W submatrices]
+ [CPU for equations is 0.00 seconds.]
+ Elapsed time for equations is: less than one second.
+ [CPU for formulas and equations is 0.00 seconds.]
+ Elapsed time for formulas and equations is: less than one second.
+  (There are now 91001 nonzeros in those parts of
+      the equations calculated for this step.)
+  
+ 
+  (Beginning simulation for pass number 2 of a 5-pass simulation,
+    subinterval 1.)
+   (Total number of nonzero entries 
+    in the left hand side matrix is 91001.)
+  [KSTEPA=2, NPASSA=5]
+  [Have been 1 extra reallocations of MMNZ,MMNZ1. This may be
+    slowing down this sim considerably. A suitable
+    "start with MMNZ = <value> ;" statement
+     may speed things up.]
+   [See Section 32.3 of the GEMPACK Manual, "MMNZ: Allocating memory for the LU
+    decomposition".][TopicID:gpd3.13.3]
+  [Completed 0.000000 percent of the whole sim. Subint 1 will do 50.00000.]
+ 
+  (Calculating the LU decomposition.)
+  Reusing permutations for zero free diagonal
+  Reusing strong connect permutations
+  Failed Reusing pivots in subblock 279 for pivot 2337 out of 5532
+     The pivot elements stability of 0.09876 is less than GPLUHarwellReuseU
+  Only part of previous pivots have been reused
+   [CPU time for GPLU analysis is 0.05 seconds.]
+   Elapsed time for  GPLU analysis is: less than one second.
+  [Calling MA48BG.]
+   [CPU time for MA48B is 0.00 seconds.]
+   Elapsed time for MA48B is: less than one second.
+  (Minimum size of MMNZ and MMNZ1 to allow LU decomposition by MA48 is 223785.)
+  [CPU time for LU decomposition is 0.05 seconds.]
+  Elapsed time for LU decomposition is: less than one second.
+  [CPU time for MA48C/MA28I is 0.02 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Cumulative solution obtained.)
+ [CPU for simulation is 0.06 seconds.]
+ Elapsed time for simulation is: less than one second.
+ 
+  (Beginning the backsolve after pass 2 of this 5-pass calculation.)
+  (Subinterval number 1.)
+  [CPU for backsolve is 0.00 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 2 of this 5-pass calculation.)
+  (Subinterval 1.)
+  [CPU for update is 0.02 seconds.]
+  [CPU for step 2 is 0.08 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 2 is: less than one second.
+ 
+  --->  Beginning pass number 3 of 5-pass calculation, subinterval 1.
+  [Copying all updated values for use in this pass.]
+ [CPU for reads, formulas etc is 0.00 seconds.]
+ Elapsed time for reads, formulas etc is: less than one second.
+ 
+  [Starting TGCSM2W submatrices]
+ [CPU for equations is 0.00 seconds.]
+ Elapsed time for equations is: less than one second.
+ [CPU for formulas and equations is 0.00 seconds.]
+ Elapsed time for formulas and equations is: less than one second.
+  (There are now 91019 nonzeros in those parts of
+      the equations calculated for this step.)
+  
+ 
+  (Beginning simulation for pass number 3 of a 5-pass simulation,
+    subinterval 1.)
+   (Total number of nonzero entries 
+    in the left hand side matrix is 91019.)
+  [KSTEPA=3, NPASSA=5]
+  [Have been 1 extra reallocations of MMNZ,MMNZ1. This may be
+    slowing down this sim considerably. A suitable
+    "start with MMNZ = <value> ;" statement
+     may speed things up.]
+   [See Section 32.3 of the GEMPACK Manual, "MMNZ: Allocating memory for the LU
+    decomposition".][TopicID:gpd3.13.3]
+  [Completed 0.000000 percent of the whole sim. Subint 1 will do 50.00000.]
+ 
+  (Calculating the LU decomposition.)
+  Reusing permutations for zero free diagonal
+  Reusing strong connect permutations
+  ReUse of pivots successful
+   [CPU time for GPLU analysis is 0.03 seconds.]
+   Elapsed time for  GPLU analysis is: less than one second.
+  [Calling MA48BG.]
+   [CPU time for MA48B is 0.02 seconds.]
+   Elapsed time for MA48B is: less than one second.
+  (Minimum size of MMNZ and MMNZ1 to allow LU decomposition by MA48 is 223803.)
+  [CPU time for LU decomposition is 0.05 seconds.]
+  Elapsed time for LU decomposition is: less than one second.
+  [CPU time for MA48C/MA28I is 0.00 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Cumulative solution obtained.)
+ [CPU for simulation is 0.05 seconds.]
+ Elapsed time for simulation is: less than one second.
+ 
+  (Beginning the backsolve after pass 3 of this 5-pass calculation.)
+  (Subinterval number 1.)
+  [CPU for backsolve is 0.02 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 3 of this 5-pass calculation.)
+  (Subinterval 1.)
+  [CPU for update is 0.00 seconds.]
+  [CPU for step 3 is 0.06 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 3 is: less than one second.
+ 
+  --->  Beginning pass number 4 of 5-pass calculation, subinterval 1.
+  [Copying all updated values for use in this pass.]
+ [CPU for reads, formulas etc is 0.00 seconds.]
+ Elapsed time for reads, formulas etc is: less than one second.
+ 
+  [Starting TGCSM2W submatrices]
+ [CPU for equations is 0.00 seconds.]
+ Elapsed time for equations is: less than one second.
+ [CPU for formulas and equations is 0.00 seconds.]
+ Elapsed time for formulas and equations is: less than one second.
+  (There are now 90999 nonzeros in those parts of
+      the equations calculated for this step.)
+  
+ 
+  (Beginning simulation for pass number 4 of a 5-pass simulation,
+    subinterval 1.)
+   (Total number of nonzero entries 
+    in the left hand side matrix is 90999.)
+  [KSTEPA=4, NPASSA=5]
+  [Have been 1 extra reallocations of MMNZ,MMNZ1. This may be
+    slowing down this sim considerably. A suitable
+    "start with MMNZ = <value> ;" statement
+     may speed things up.]
+   [See Section 32.3 of the GEMPACK Manual, "MMNZ: Allocating memory for the LU
+    decomposition".][TopicID:gpd3.13.3]
+  [Completed 0.000000 percent of the whole sim. Subint 1 will do 50.00000.]
+ 
+  (Calculating the LU decomposition.)
+  Reusing permutations for zero free diagonal
+  Reusing strong connect permutations
+  Failed Reusing pivots in subblock 279 for pivot 2337 out of 5538
+     The pivot elements stability of 0.09995 is less than GPLUHarwellReuseU
+  Only part of previous pivots have been reused
+   [CPU time for GPLU analysis is 0.05 seconds.]
+   Elapsed time for  GPLU analysis is: less than one second.
+  [Calling MA48BG.]
+   [CPU time for MA48B is 0.00 seconds.]
+   Elapsed time for MA48B is: less than one second.
+  (Minimum size of MMNZ and MMNZ1 to allow LU decomposition by MA48 is 227027.)
+  [CPU time for LU decomposition is 0.05 seconds.]
+  Elapsed time for LU decomposition is: less than one second.
+  [CPU time for MA48C/MA28I is 0.02 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Cumulative solution obtained.)
+ [CPU for simulation is 0.06 seconds.]
+ Elapsed time for simulation is: less than one second.
+ 
+  (Beginning the backsolve after pass 4 of this 5-pass calculation.)
+  (Subinterval number 1.)
+  [CPU for backsolve is 0.02 seconds.]
+  Elapsed time for backsolve is:  1 seconds.
+ 
+  (Beginning the update after pass 4 of this 5-pass calculation.)
+  (Subinterval 1.)
+  [CPU for update is 0.00 seconds.]
+  [CPU for step 4 is 0.08 seconds.]
+  Elapsed time for update is:  1 seconds.
+  Elapsed time for step 4 is:  1 seconds.
+ 
+  --->  Beginning pass number 5 of 5-pass calculation, subinterval 1.
+  [Copying all updated values for use in this pass.]
+ [CPU for reads, formulas etc is 0.00 seconds.]
+ Elapsed time for reads, formulas etc is: less than one second.
+ 
+  [Starting TGCSM2W submatrices]
+ [CPU for equations is 0.00 seconds.]
+ Elapsed time for equations is: less than one second.
+ [CPU for formulas and equations is 0.00 seconds.]
+ Elapsed time for formulas and equations is: less than one second.
+  (There are now 91008 nonzeros in those parts of
+      the equations calculated for this step.)
+  
+ 
+  (Beginning simulation for pass number 5 of a 5-pass simulation,
+    subinterval 1.)
+   (Total number of nonzero entries 
+    in the left hand side matrix is 91008.)
+  [KSTEPA=5, NPASSA=5]
+  [Have been 1 extra reallocations of MMNZ,MMNZ1. This may be
+    slowing down this sim considerably. A suitable
+    "start with MMNZ = <value> ;" statement
+     may speed things up.]
+   [See Section 32.3 of the GEMPACK Manual, "MMNZ: Allocating memory for the LU
+    decomposition".][TopicID:gpd3.13.3]
+  [Completed 0.000000 percent of the whole sim. Subint 1 will do 50.00000.]
+ 
+  (Calculating the LU decomposition.)
+  Reusing permutations for zero free diagonal
+  Reusing strong connect permutations
+  Failed Reusing pivots in subblock 279 for pivot 2337 out of 5532
+     The pivot elements stability of 0.09973 is less than GPLUHarwellReuseU
+  Only part of previous pivots have been reused
+   [CPU time for GPLU analysis is 0.05 seconds.]
+   Elapsed time for  GPLU analysis is: less than one second.
+  [Calling MA48BG.]
+   [CPU time for MA48B is 0.02 seconds.]
+   Elapsed time for MA48B is: less than one second.
+  (Minimum size of MMNZ and MMNZ1 to allow LU decomposition by MA48 is 224670.)
+  [CPU time for LU decomposition is 0.06 seconds.]
+  Elapsed time for LU decomposition is: less than one second.
+  [CPU time for MA48C/MA28I is 0.00 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Cumulative solution obtained.)
+ [CPU for simulation is 0.06 seconds.]
+ Elapsed time for simulation is: less than one second.
+ 
+  (Beginning the backsolve after pass 5 of this 5-pass calculation.)
+  (Subinterval number 1.)
+  [CPU for backsolve is 0.02 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 5 of this 5-pass calculation.)
+  (Subinterval 1.)
+ 
+  (Writing the UC5/6/7 file.)
+  [CPU for update is 0.02 seconds.]
+  [CPU for step 5 is 0.09 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 5 is: less than one second.
+ Elapsed time to do after-first-LU-decomp part
+  of this 5-pass calculation is:  1 seconds.
+ [CPU for all of this 4-step calculation is 0.44 seconds.]
+ Elapsed time for all this 4-step calculation is:  1 seconds.
+ 
+  --->  Beginning pass number 1 of 7-pass calculation, subinterval 1.
+ [CPU for simulation is 0.00 seconds.]
+ Elapsed time for simulation is: less than one second.
+ 
+  (Beginning the backsolve after pass 1 of this 7-pass calculation.)
+  (Subinterval number 1.)
+ 
+  (Reading pre-sim values from the current SLC file.)
+  [CPU for backsolve is 0.11 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 1 of this 7-pass calculation.)
+  (Subinterval 1.)
+  [CPU for update is 0.00 seconds.]
+  [CPU for step 1 is 0.11 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 1 is: less than one second.
+ 
+  --->  Beginning pass number 2 of 7-pass calculation, subinterval 1.
+  [Copying all updated values for use in this pass.]
+ [CPU for reads, formulas etc is 0.00 seconds.]
+ Elapsed time for reads, formulas etc is: less than one second.
+ 
+  [Starting TGCSM2W submatrices]
+ [CPU for equations is 0.02 seconds.]
+ Elapsed time for equations is: less than one second.
+ [CPU for formulas and equations is 0.02 seconds.]
+ Elapsed time for formulas and equations is: less than one second.
+  (There are now 90999 nonzeros in those parts of
+      the equations calculated for this step.)
+  
+ 
+  (Beginning simulation for pass number 2 of a 7-pass simulation,
+    subinterval 1.)
+   (Total number of nonzero entries 
+    in the left hand side matrix is 90999.)
+  [KSTEPA=2, NPASSA=7]
+  [Have been 1 extra reallocations of MMNZ,MMNZ1. This may be
+    slowing down this sim considerably. A suitable
+    "start with MMNZ = <value> ;" statement
+     may speed things up.]
+   [See Section 32.3 of the GEMPACK Manual, "MMNZ: Allocating memory for the LU
+    decomposition".][TopicID:gpd3.13.3]
+  [Completed 0.000000 percent of the whole sim. Subint 1 will do 50.00000.]
+ 
+  (Calculating the LU decomposition.)
+  Reusing permutations for zero free diagonal
+  Reusing strong connect permutations
+  Failed Reusing pivots in subblock 279 for pivot 2337 out of 5532
+     The pivot elements stability of 0.09858 is less than GPLUHarwellReuseU
+  Only part of previous pivots have been reused
+   [CPU time for GPLU analysis is 0.05 seconds.]
+   Elapsed time for  GPLU analysis is: less than one second.
+  [Calling MA48BG.]
+   [CPU time for MA48B is 0.00 seconds.]
+   Elapsed time for MA48B is: less than one second.
+  (Minimum size of MMNZ and MMNZ1 to allow LU decomposition by MA48 is 221781.)
+  [CPU time for LU decomposition is 0.05 seconds.]
+  Elapsed time for LU decomposition is: less than one second.
+  [CPU time for MA48C/MA28I is 0.00 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Cumulative solution obtained.)
+ [CPU for simulation is 0.05 seconds.]
+ Elapsed time for simulation is: less than one second.
+ 
+  (Beginning the backsolve after pass 2 of this 7-pass calculation.)
+  (Subinterval number 1.)
+  [CPU for backsolve is 0.00 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 2 of this 7-pass calculation.)
+  (Subinterval 1.)
+  [CPU for update is 0.00 seconds.]
+  [CPU for step 2 is 0.08 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 2 is: less than one second.
+ 
+  --->  Beginning pass number 3 of 7-pass calculation, subinterval 1.
+  [Copying all updated values for use in this pass.]
+ [CPU for reads, formulas etc is 0.00 seconds.]
+ Elapsed time for reads, formulas etc is: less than one second.
+ 
+  [Starting TGCSM2W submatrices]
+ [CPU for equations is 0.02 seconds.]
+ Elapsed time for equations is: less than one second.
+ [CPU for formulas and equations is 0.02 seconds.]
+ Elapsed time for formulas and equations is: less than one second.
+  (There are now 91006 nonzeros in those parts of
+      the equations calculated for this step.)
+  
+ 
+  (Beginning simulation for pass number 3 of a 7-pass simulation,
+    subinterval 1.)
+   (Total number of nonzero entries 
+    in the left hand side matrix is 91006.)
+  [KSTEPA=3, NPASSA=7]
+  [Have been 1 extra reallocations of MMNZ,MMNZ1. This may be
+    slowing down this sim considerably. A suitable
+    "start with MMNZ = <value> ;" statement
+     may speed things up.]
+   [See Section 32.3 of the GEMPACK Manual, "MMNZ: Allocating memory for the LU
+    decomposition".][TopicID:gpd3.13.3]
+  [Completed 0.000000 percent of the whole sim. Subint 1 will do 50.00000.]
+ 
+  (Calculating the LU decomposition.)
+  Reusing permutations for zero free diagonal
+  Reusing strong connect permutations
+  Failed Reusing pivots in subblock 279 for pivot 2339 out of 5531
+     The pivot elements stability of 0.09735 is less than GPLUHarwellReuseU
+  Only part of previous pivots have been reused
+   [CPU time for GPLU analysis is 0.05 seconds.]
+   Elapsed time for  GPLU analysis is: less than one second.
+  [Calling MA48BG.]
+   [CPU time for MA48B is 0.00 seconds.]
+   Elapsed time for MA48B is: less than one second.
+  (Minimum size of MMNZ and MMNZ1 to allow LU decomposition by MA48 is 223709.)
+  [CPU time for LU decomposition is 0.05 seconds.]
+  Elapsed time for LU decomposition is: less than one second.
+  [CPU time for MA48C/MA28I is 0.00 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Cumulative solution obtained.)
+ [CPU for simulation is 0.05 seconds.]
+ Elapsed time for simulation is: less than one second.
+ 
+  (Beginning the backsolve after pass 3 of this 7-pass calculation.)
+  (Subinterval number 1.)
+  [CPU for backsolve is 0.00 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 3 of this 7-pass calculation.)
+  (Subinterval 1.)
+  [CPU for update is 0.00 seconds.]
+  [CPU for step 3 is 0.08 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 3 is: less than one second.
+ 
+  --->  Beginning pass number 4 of 7-pass calculation, subinterval 1.
+  [Copying all updated values for use in this pass.]
+ [CPU for reads, formulas etc is 0.00 seconds.]
+ Elapsed time for reads, formulas etc is: less than one second.
+ 
+  [Starting TGCSM2W submatrices]
+ [CPU for equations is 0.02 seconds.]
+ Elapsed time for equations is: less than one second.
+ [CPU for formulas and equations is 0.02 seconds.]
+ Elapsed time for formulas and equations is: less than one second.
+  (There are now 91013 nonzeros in those parts of
+      the equations calculated for this step.)
+  
+ 
+  (Beginning simulation for pass number 4 of a 7-pass simulation,
+    subinterval 1.)
+   (Total number of nonzero entries 
+    in the left hand side matrix is 91013.)
+  [KSTEPA=4, NPASSA=7]
+  [Have been 1 extra reallocations of MMNZ,MMNZ1. This may be
+    slowing down this sim considerably. A suitable
+    "start with MMNZ = <value> ;" statement
+     may speed things up.]
+   [See Section 32.3 of the GEMPACK Manual, "MMNZ: Allocating memory for the LU
+    decomposition".][TopicID:gpd3.13.3]
+  [Completed 0.000000 percent of the whole sim. Subint 1 will do 50.00000.]
+ 
+  (Calculating the LU decomposition.)
+  Reusing permutations for zero free diagonal
+  Reusing strong connect permutations
+  ReUse of pivots successful
+   [CPU time for GPLU analysis is 0.03 seconds.]
+   Elapsed time for  GPLU analysis is: less than one second.
+  [Calling MA48BG.]
+   [CPU time for MA48B is 0.00 seconds.]
+   Elapsed time for MA48B is: less than one second.
+  (Minimum size of MMNZ and MMNZ1 to allow LU decomposition by MA48 is 223716.)
+  [CPU time for LU decomposition is 0.03 seconds.]
+  Elapsed time for LU decomposition is: less than one second.
+  [CPU time for MA48C/MA28I is 0.02 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Cumulative solution obtained.)
+ [CPU for simulation is 0.05 seconds.]
+ Elapsed time for simulation is: less than one second.
+ 
+  (Beginning the backsolve after pass 4 of this 7-pass calculation.)
+  (Subinterval number 1.)
+  [CPU for backsolve is 0.02 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 4 of this 7-pass calculation.)
+  (Subinterval 1.)
+  [CPU for update is 0.00 seconds.]
+  [CPU for step 4 is 0.08 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 4 is: less than one second.
+ 
+  --->  Beginning pass number 5 of 7-pass calculation, subinterval 1.
+  [Copying all updated values for use in this pass.]
+ [CPU for reads, formulas etc is 0.00 seconds.]
+ Elapsed time for reads, formulas etc is: less than one second.
+ 
+  [Starting TGCSM2W submatrices]
+ [CPU for equations is 0.00 seconds.]
+ Elapsed time for equations is: less than one second.
+ [CPU for formulas and equations is 0.00 seconds.]
+ Elapsed time for formulas and equations is: less than one second.
+  (There are now 91009 nonzeros in those parts of
+      the equations calculated for this step.)
+  
+ 
+  (Beginning simulation for pass number 5 of a 7-pass simulation,
+    subinterval 1.)
+   (Total number of nonzero entries 
+    in the left hand side matrix is 91009.)
+  [KSTEPA=5, NPASSA=7]
+  [Have been 1 extra reallocations of MMNZ,MMNZ1. This may be
+    slowing down this sim considerably. A suitable
+    "start with MMNZ = <value> ;" statement
+     may speed things up.]
+   [See Section 32.3 of the GEMPACK Manual, "MMNZ: Allocating memory for the LU
+    decomposition".][TopicID:gpd3.13.3]
+  [Completed 0.000000 percent of the whole sim. Subint 1 will do 50.00000.]
+ 
+  (Calculating the LU decomposition.)
+  Reusing permutations for zero free diagonal
+  Reusing strong connect permutations
+  ReUse of pivots successful
+   [CPU time for GPLU analysis is 0.03 seconds.]
+   Elapsed time for  GPLU analysis is: less than one second.
+  [Calling MA48BG.]
+   [CPU time for MA48B is 0.02 seconds.]
+   Elapsed time for MA48B is: less than one second.
+  (Minimum size of MMNZ and MMNZ1 to allow LU decomposition by MA48 is 223712.)
+  [CPU time for LU decomposition is 0.05 seconds.]
+  Elapsed time for LU decomposition is: less than one second.
+  [CPU time for MA48C/MA28I is 0.00 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Cumulative solution obtained.)
+ [CPU for simulation is 0.05 seconds.]
+ Elapsed time for simulation is: less than one second.
+ 
+  (Beginning the backsolve after pass 5 of this 7-pass calculation.)
+  (Subinterval number 1.)
+  [CPU for backsolve is 0.02 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 5 of this 7-pass calculation.)
+  (Subinterval 1.)
+  [CPU for update is 0.00 seconds.]
+  [CPU for step 5 is 0.06 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 5 is: less than one second.
+ 
+  --->  Beginning pass number 6 of 7-pass calculation, subinterval 1.
+  [Copying all updated values for use in this pass.]
+ [CPU for reads, formulas etc is 0.00 seconds.]
+ Elapsed time for reads, formulas etc is: less than one second.
+ 
+  [Starting TGCSM2W submatrices]
+ [CPU for equations is 0.02 seconds.]
+ Elapsed time for equations is: less than one second.
+ [CPU for formulas and equations is 0.02 seconds.]
+ Elapsed time for formulas and equations is: less than one second.
+  (There are now 91027 nonzeros in those parts of
+      the equations calculated for this step.)
+  
+ 
+  (Beginning simulation for pass number 6 of a 7-pass simulation,
+    subinterval 1.)
+   (Total number of nonzero entries 
+    in the left hand side matrix is 91027.)
+  [KSTEPA=6, NPASSA=7]
+  [Have been 1 extra reallocations of MMNZ,MMNZ1. This may be
+    slowing down this sim considerably. A suitable
+    "start with MMNZ = <value> ;" statement
+     may speed things up.]
+   [See Section 32.3 of the GEMPACK Manual, "MMNZ: Allocating memory for the LU
+    decomposition".][TopicID:gpd3.13.3]
+  [Completed 0.000000 percent of the whole sim. Subint 1 will do 50.00000.]
+ 
+  (Calculating the LU decomposition.)
+  Reusing permutations for zero free diagonal
+  Reusing strong connect permutations
+  Failed Reusing pivots in subblock 279 for pivot 1418 out of 5532
+     The pivot elements stability of 0.09969 is less than GPLUHarwellReuseU
+  Only part of previous pivots have been reused
+   [CPU time for GPLU analysis is 0.05 seconds.]
+   Elapsed time for  GPLU analysis is: less than one second.
+  [Calling MA48BG.]
+   [CPU time for MA48B is 0.00 seconds.]
+   Elapsed time for MA48B is: less than one second.
+  (Minimum size of MMNZ and MMNZ1 to allow LU decomposition by MA48 is 223772.)
+  [CPU time for LU decomposition is 0.05 seconds.]
+  Elapsed time for LU decomposition is: less than one second.
+  [CPU time for MA48C/MA28I is 0.00 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Cumulative solution obtained.)
+ [CPU for simulation is 0.05 seconds.]
+ Elapsed time for simulation is: less than one second.
+ 
+  (Beginning the backsolve after pass 6 of this 7-pass calculation.)
+  (Subinterval number 1.)
+  [CPU for backsolve is 0.02 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 6 of this 7-pass calculation.)
+  (Subinterval 1.)
+  [CPU for update is 0.00 seconds.]
+  [CPU for step 6 is 0.08 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 6 is: less than one second.
+ 
+  --->  Beginning pass number 7 of 7-pass calculation, subinterval 1.
+  [Copying all updated values for use in this pass.]
+ [CPU for reads, formulas etc is 0.00 seconds.]
+ Elapsed time for reads, formulas etc is: less than one second.
+ 
+  [Starting TGCSM2W submatrices]
+ [CPU for equations is 0.00 seconds.]
+ Elapsed time for equations is: less than one second.
+ [CPU for formulas and equations is 0.00 seconds.]
+ Elapsed time for formulas and equations is: less than one second.
+  (There are now 91009 nonzeros in those parts of
+      the equations calculated for this step.)
+  
+ 
+  (Beginning simulation for pass number 7 of a 7-pass simulation,
+    subinterval 1.)
+   (Total number of nonzero entries 
+    in the left hand side matrix is 91009.)
+  [KSTEPA=7, NPASSA=7]
+  [Have been 1 extra reallocations of MMNZ,MMNZ1. This may be
+    slowing down this sim considerably. A suitable
+    "start with MMNZ = <value> ;" statement
+     may speed things up.]
+   [See Section 32.3 of the GEMPACK Manual, "MMNZ: Allocating memory for the LU
+    decomposition".][TopicID:gpd3.13.3]
+  [Completed 0.000000 percent of the whole sim. Subint 1 will do 50.00000.]
+ 
+  (Calculating the LU decomposition.)
+  Reusing permutations for zero free diagonal
+  Reusing strong connect permutations
+  ReUse of pivots successful
+   [CPU time for GPLU analysis is 0.03 seconds.]
+   Elapsed time for  GPLU analysis is: less than one second.
+  [Calling MA48BG.]
+   [CPU time for MA48B is 0.00 seconds.]
+   Elapsed time for MA48B is: less than one second.
+  (Minimum size of MMNZ and MMNZ1 to allow LU decomposition by MA48 is 223754.)
+  [CPU time for LU decomposition is 0.03 seconds.]
+  Elapsed time for LU decomposition is: less than one second.
+  [CPU time for MA48C/MA28I is 0.00 seconds.]
+  [CPU time for solution accuracy check is 0.02 seconds.]
+  (Cumulative solution obtained.)
+ [CPU for simulation is 0.06 seconds.]
+ Elapsed time for simulation is: less than one second.
+ 
+  (Beginning the backsolve after pass 7 of this 7-pass calculation.)
+  (Subinterval number 1.)
+  [CPU for backsolve is 0.00 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 7 of this 7-pass calculation.)
+  (Subinterval 1.)
+ 
+  (Writing the UC5/6/7 file.)
+  [CPU for update is 0.02 seconds.]
+  [CPU for step 7 is 0.08 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 7 is: less than one second.
+ Elapsed time to do after-first-LU-decomp part
+  of this 7-pass calculation is: less than one second.
+ [CPU for all of this 6-step calculation is 0.56 seconds.]
+ Elapsed time for all this 6-step calculation is: less than one second.
+ 
+  ---> Beginning the extrapolation.
+ 
+  (Extrapolating - Cumulative results.)
+ 
+        SUMMARY OF CONVERGENCE RESULTS                  Number   Min Figs Agree
+        ------------------------------                  ------   --------------
+   XMA  Three extrapolations equal to machine accuracy   16138         6
+   FC0  Fair confidence that the result is zero             32
+   CX   Confidence in the extrapolated result            17047         1
+   FCX  Fair confidence in the extrapolated result          85         2
+   MVC  Monotonic, results very close together              14         5
+   MN0  Monotonic, results near zero                         1         3
+   MC?  Monotonic, appears to be converging                 80         0
+   MD?  Monotonic, but may be diverging                      6         2
+   MD!  Monotonic, but appears to be diverging               5         3
+   OVC  Oscillating, but results very close together         5         5
+   ON0  Oscillating, but results near zero                   2         2
+   OC?  Oscillating, but appears to be converging           41         1
+   OD?  Oscillating and may be diverging                     2         3
+   OD!  Oscillating and appears to be diverging              6         1
+ 
+   2 results are judged accurate to 0 figures.
+   4 results are judged accurate to 1 figures.
+   33 results are judged accurate to 2 figures.
+   346 results are judged accurate to 3 figures.
+   3207 results are judged accurate to 4 figures.
+   13694 results are judged accurate to 5 figures.
+   16146 results are judged accurate to 6 figures.
+ 
+  Above is for linearised variables.
+  Below are for levels values of percent-change and change results.
+  
+   1 results are judged accurate to 0 figures.
+   4 results are judged accurate to 1 figures.
+   31 results are judged accurate to 2 figures.
+   204 results are judged accurate to 3 figures.
+   1183 results are judged accurate to 4 figures.
+   2933 results are judged accurate to 5 figures.
+   29108 results are judged accurate to 6 figures.
+ 
+  (The summary above covers the XAC-retained variables.)
+  
+ [CPU for extrapolation is 0.02 seconds.]
+ Elapsed time for extrapolation is: less than one second.
+ 
+  NEXT SUMMARY IS FOR ALL UPDATED DATA
+  
+ 
+        SUMMARY OF CONVERGENCE RESULTS                  Number   Min Figs Agree
+        ------------------------------                  ------   --------------
+   XMA  Three extrapolations equal to machine accuracy   12222         6
+   CX   Confidence in the extrapolated result               79         5
+ 
+   79 results are judged accurate to 5 figures.
+   12222 results are judged accurate to 6 figures.
+ 
+ 
+  Variable accuracy "face" number is 9 (out of 10).
+  Data accuracy "face" number is 10 (out of 10).
+  
+ 
+  Accuracy for subinterval 1 is sufficient - accuracy was 100.0000 percent.
+  (Now have completed an interval of length 0.5000000,
+   which means about 50.00000 percent of the simulation is done.)
+  Subinterval length set at 0.5000000 (hopefully the last subinterval).
+ [CPU for subinterval number 1 is 1.58 seconds.]
+ Elapsed time for subinterval number 1 is:  1 seconds.
+ 
+  +++>  Beginning subinterval number 2.
+ 
+  --->  Beginning pass number 1 of 3-pass calculation, subinterval 2.
+  [Copying all updated values for use in this pass.]
+ [CPU for reads, formulas etc is 0.00 seconds.]
+ Elapsed time for reads, formulas etc is: less than one second.
+ 
+  (Writing the Interval Work file.)
+ 
+  [Starting TGCSM2W submatrices]
+ [CPU for equations is 0.00 seconds.]
+ Elapsed time for equations is: less than one second.
+ [CPU for formulas and equations is 0.06 seconds.]
+ Elapsed time for formulas and equations is: less than one second.
+ 
+  (Beginning simulation for pass number 1 of a 3-pass simulation,
+    subinterval 2.)
+   (Total number of nonzero entries 
+    in the left hand side matrix is 91045.)
+  [KSTEPA=1, NPASSA=3]
+  [Have been 1 extra reallocations of MMNZ,MMNZ1. This may be
+    slowing down this sim considerably. A suitable
+    "start with MMNZ = <value> ;" statement
+     may speed things up.]
+   [See Section 32.3 of the GEMPACK Manual, "MMNZ: Allocating memory for the LU
+    decomposition".][TopicID:gpd3.13.3]
+  [Completed 50.00000 percent of the whole sim. Subint 2 will do 50.00000.]
+ 
+  (Calculating the LU decomposition.)
+  Reusing permutations for zero free diagonal
+  Reusing strong connect permutations
+  ReUse of pivots successful
+   [CPU time for GPLU analysis is 0.03 seconds.]
+   Elapsed time for  GPLU analysis is: less than one second.
+  [Calling MA48BG.]
+   [CPU time for MA48B is 0.02 seconds.]
+   Elapsed time for MA48B is: less than one second.
+  (Minimum size of MMNZ and MMNZ1 to allow LU decomposition by MA48 is 223786.)
+  [CPU time for LU decomposition is 0.05 seconds.]
+  Elapsed time for LU decomposition is: less than one second.
+  [CPU time for MA48C/MA28I is 0.00 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Cumulative solution obtained.)
+  [CPU time for MA48C/MA28I is 0.02 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Second cumulative solution obtained.)
+  [CPU time for MA48C/MA28I is 0.00 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Third cumulative solution obtained.)
+ [CPU for simulation is 0.08 seconds.]
+ Elapsed time for simulation is: less than one second.
+ Elapsed time to do up to first solve (this subinterval) is
+   less than one second.
+ 
+  (Beginning the backsolve after pass 1 of this 3-pass calculation.)
+  (Subinterval number 2.)
+  [CPU for backsolve is 0.02 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 1 of this 3-pass calculation.)
+  (Subinterval 2.)
+  [CPU for update is 0.00 seconds.]
+  [CPU for step 1 is 0.16 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 1 is: less than one second.
+ 
+  --->  Beginning pass number 2 of 3-pass calculation, subinterval 2.
+  [Copying all updated values for use in this pass.]
+ [CPU for reads, formulas etc is 0.00 seconds.]
+ Elapsed time for reads, formulas etc is: less than one second.
+ 
+  [Starting TGCSM2W submatrices]
+ [CPU for equations is 0.00 seconds.]
+ Elapsed time for equations is: less than one second.
+ [CPU for formulas and equations is 0.00 seconds.]
+ Elapsed time for formulas and equations is: less than one second.
+  (There are now 91034 nonzeros in those parts of
+      the equations calculated for this step.)
+  
+ 
+  (Beginning simulation for pass number 2 of a 3-pass simulation,
+    subinterval 2.)
+   (Total number of nonzero entries 
+    in the left hand side matrix is 91034.)
+  [KSTEPA=2, NPASSA=3]
+  [Have been 1 extra reallocations of MMNZ,MMNZ1. This may be
+    slowing down this sim considerably. A suitable
+    "start with MMNZ = <value> ;" statement
+     may speed things up.]
+   [See Section 32.3 of the GEMPACK Manual, "MMNZ: Allocating memory for the LU
+    decomposition".][TopicID:gpd3.13.3]
+  [Completed 50.00000 percent of the whole sim. Subint 2 will do 50.00000.]
+ 
+  (Calculating the LU decomposition.)
+  Reusing permutations for zero free diagonal
+  Reusing strong connect permutations
+  Failed Reusing pivots in subblock 279 for pivot 2333 out of 5532
+     The pivot elements stability of 0.09669 is less than GPLUHarwellReuseU
+  Only part of previous pivots have been reused
+   [CPU time for GPLU analysis is 0.05 seconds.]
+   Elapsed time for  GPLU analysis is: less than one second.
+  [Calling MA48BG.]
+   [CPU time for MA48B is 0.02 seconds.]
+   Elapsed time for MA48B is: less than one second.
+  (Minimum size of MMNZ and MMNZ1 to allow LU decomposition by MA48 is 225650.)
+  [CPU time for LU decomposition is 0.06 seconds.]
+  Elapsed time for LU decomposition is: less than one second.
+  [CPU time for MA48C/MA28I is 0.00 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Cumulative solution obtained.)
+ [CPU for simulation is 0.06 seconds.]
+ Elapsed time for simulation is: less than one second.
+ 
+  (Beginning the backsolve after pass 2 of this 3-pass calculation.)
+  (Subinterval number 2.)
+  [CPU for backsolve is 0.02 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 2 of this 3-pass calculation.)
+  (Subinterval 2.)
+  [CPU for update is 0.00 seconds.]
+  [CPU for step 2 is 0.08 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 2 is: less than one second.
+ 
+  --->  Beginning pass number 3 of 3-pass calculation, subinterval 2.
+  [Copying all updated values for use in this pass.]
+ [CPU for reads, formulas etc is 0.00 seconds.]
+ Elapsed time for reads, formulas etc is: less than one second.
+ 
+  [Starting TGCSM2W submatrices]
+ [CPU for equations is 0.00 seconds.]
+ Elapsed time for equations is: less than one second.
+ [CPU for formulas and equations is 0.00 seconds.]
+ Elapsed time for formulas and equations is: less than one second.
+  (There are now 91040 nonzeros in those parts of
+      the equations calculated for this step.)
+  
+ 
+  (Beginning simulation for pass number 3 of a 3-pass simulation,
+    subinterval 2.)
+   (Total number of nonzero entries 
+    in the left hand side matrix is 91040.)
+  [KSTEPA=3, NPASSA=3]
+  [Have been 1 extra reallocations of MMNZ,MMNZ1. This may be
+    slowing down this sim considerably. A suitable
+    "start with MMNZ = <value> ;" statement
+     may speed things up.]
+   [See Section 32.3 of the GEMPACK Manual, "MMNZ: Allocating memory for the LU
+    decomposition".][TopicID:gpd3.13.3]
+  [Completed 50.00000 percent of the whole sim. Subint 2 will do 50.00000.]
+ 
+  (Calculating the LU decomposition.)
+  Reusing permutations for zero free diagonal
+  Reusing strong connect permutations
+  Failed Reusing pivots in subblock 279 for pivot 1278 out of 5541
+     The pivot elements stability of 0.09998 is less than GPLUHarwellReuseU
+  Only part of previous pivots have been reused
+   [CPU time for GPLU analysis is 0.05 seconds.]
+   Elapsed time for  GPLU analysis is:  1 seconds.
+  [Calling MA48BG.]
+   [CPU time for MA48B is 0.02 seconds.]
+   Elapsed time for MA48B is: less than one second.
+  (Minimum size of MMNZ and MMNZ1 to allow LU decomposition by MA48 is 222777.)
+  [CPU time for LU decomposition is 0.06 seconds.]
+  Elapsed time for LU decomposition is:  1 seconds.
+  [CPU time for MA48C/MA28I is 0.00 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Cumulative solution obtained.)
+ [CPU for simulation is 0.06 seconds.]
+ Elapsed time for simulation is:  1 seconds.
+ 
+  (Beginning the backsolve after pass 3 of this 3-pass calculation.)
+  (Subinterval number 2.)
+  [CPU for backsolve is 0.02 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 3 of this 3-pass calculation.)
+  (Subinterval 2.)
+ 
+  (Writing the UC5/6/7 file.)
+  [CPU for update is 0.02 seconds.]
+  [CPU for step 3 is 0.09 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 3 is:  1 seconds.
+ Elapsed time to do after-first-LU-decomp part
+  of this 3-pass calculation is:  1 seconds.
+ [CPU for all of this 2-step calculation is 0.33 seconds.]
+ Elapsed time for all this 2-step calculation is:  1 seconds.
+ 
+  --->  Beginning pass number 1 of 5-pass calculation, subinterval 2.
+  [Copying all updated values for use in this pass.]
+ [CPU for simulation is 0.00 seconds.]
+ Elapsed time for simulation is: less than one second.
+ 
+  (Beginning the backsolve after pass 1 of this 5-pass calculation.)
+  (Subinterval number 2.)
+ 
+  (Reading the Interval Work file.)
+  [CPU for backsolve is 0.05 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 1 of this 5-pass calculation.)
+  (Subinterval 2.)
+  [CPU for update is 0.00 seconds.]
+  [CPU for step 1 is 0.05 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 1 is: less than one second.
+ 
+  --->  Beginning pass number 2 of 5-pass calculation, subinterval 2.
+  [Copying all updated values for use in this pass.]
+ [CPU for reads, formulas etc is 0.00 seconds.]
+ Elapsed time for reads, formulas etc is: less than one second.
+ 
+  [Starting TGCSM2W submatrices]
+ [CPU for equations is 0.02 seconds.]
+ Elapsed time for equations is: less than one second.
+ [CPU for formulas and equations is 0.02 seconds.]
+ Elapsed time for formulas and equations is: less than one second.
+  (There are now 91042 nonzeros in those parts of
+      the equations calculated for this step.)
+  
+ 
+  (Beginning simulation for pass number 2 of a 5-pass simulation,
+    subinterval 2.)
+   (Total number of nonzero entries 
+    in the left hand side matrix is 91042.)
+  [KSTEPA=2, NPASSA=5]
+  [Have been 1 extra reallocations of MMNZ,MMNZ1. This may be
+    slowing down this sim considerably. A suitable
+    "start with MMNZ = <value> ;" statement
+     may speed things up.]
+   [See Section 32.3 of the GEMPACK Manual, "MMNZ: Allocating memory for the LU
+    decomposition".][TopicID:gpd3.13.3]
+  [Completed 50.00000 percent of the whole sim. Subint 2 will do 50.00000.]
+ 
+  (Calculating the LU decomposition.)
+  Reusing permutations for zero free diagonal
+  Reusing strong connect permutations
+  Failed Reusing pivots in subblock 279 for pivot 3540 out of 5538
+     The pivot elements stability of 0.08731 is less than GPLUHarwellReuseU
+  Only part of previous pivots have been reused
+   [CPU time for GPLU analysis is 0.05 seconds.]
+   Elapsed time for  GPLU analysis is: less than one second.
+  [Calling MA48BG.]
+   [CPU time for MA48B is 0.00 seconds.]
+   Elapsed time for MA48B is: less than one second.
+  (Minimum size of MMNZ and MMNZ1 to allow LU decomposition by MA48 is 232154.)
+  [CPU time for LU decomposition is 0.05 seconds.]
+  Elapsed time for LU decomposition is: less than one second.
+  [CPU time for MA48C/MA28I is 0.02 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Cumulative solution obtained.)
+ [CPU for simulation is 0.06 seconds.]
+ Elapsed time for simulation is: less than one second.
+ 
+  (Beginning the backsolve after pass 2 of this 5-pass calculation.)
+  (Subinterval number 2.)
+  [CPU for backsolve is 0.02 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 2 of this 5-pass calculation.)
+  (Subinterval 2.)
+  [CPU for update is 0.00 seconds.]
+  [CPU for step 2 is 0.09 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 2 is: less than one second.
+ 
+  --->  Beginning pass number 3 of 5-pass calculation, subinterval 2.
+  [Copying all updated values for use in this pass.]
+ [CPU for reads, formulas etc is 0.00 seconds.]
+ Elapsed time for reads, formulas etc is: less than one second.
+ 
+  [Starting TGCSM2W submatrices]
+ [CPU for equations is 0.00 seconds.]
+ Elapsed time for equations is: less than one second.
+ [CPU for formulas and equations is 0.00 seconds.]
+ Elapsed time for formulas and equations is: less than one second.
+  (There are now 91043 nonzeros in those parts of
+      the equations calculated for this step.)
+  
+ 
+  (Beginning simulation for pass number 3 of a 5-pass simulation,
+    subinterval 2.)
+   (Total number of nonzero entries 
+    in the left hand side matrix is 91043.)
+  [KSTEPA=3, NPASSA=5]
+  [Have been 1 extra reallocations of MMNZ,MMNZ1. This may be
+    slowing down this sim considerably. A suitable
+    "start with MMNZ = <value> ;" statement
+     may speed things up.]
+   [See Section 32.3 of the GEMPACK Manual, "MMNZ: Allocating memory for the LU
+    decomposition".][TopicID:gpd3.13.3]
+  [Completed 50.00000 percent of the whole sim. Subint 2 will do 50.00000.]
+ 
+  (Calculating the LU decomposition.)
+  Reusing permutations for zero free diagonal
+  Reusing strong connect permutations
+  Failed Reusing pivots in subblock 279 for pivot 3543 out of 5555
+     The pivot elements stability of 0.09791 is less than GPLUHarwellReuseU
+  Only part of previous pivots have been reused
+   [CPU time for GPLU analysis is 0.05 seconds.]
+   Elapsed time for  GPLU analysis is: less than one second.
+  [Calling MA48BG.]
+   [CPU time for MA48B is 0.02 seconds.]
+   Elapsed time for MA48B is: less than one second.
+  (Minimum size of MMNZ and MMNZ1 to allow LU decomposition by MA48 is 224167.)
+  [CPU time for LU decomposition is 0.06 seconds.]
+  Elapsed time for LU decomposition is: less than one second.
+  [CPU time for MA48C/MA28I is 0.00 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Cumulative solution obtained.)
+ [CPU for simulation is 0.06 seconds.]
+ Elapsed time for simulation is: less than one second.
+ 
+  (Beginning the backsolve after pass 3 of this 5-pass calculation.)
+  (Subinterval number 2.)
+  [CPU for backsolve is 0.02 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 3 of this 5-pass calculation.)
+  (Subinterval 2.)
+  [CPU for update is 0.00 seconds.]
+  [CPU for step 3 is 0.08 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 3 is: less than one second.
+ 
+  --->  Beginning pass number 4 of 5-pass calculation, subinterval 2.
+  [Copying all updated values for use in this pass.]
+ [CPU for reads, formulas etc is 0.00 seconds.]
+ Elapsed time for reads, formulas etc is: less than one second.
+ 
+  [Starting TGCSM2W submatrices]
+ [CPU for equations is 0.02 seconds.]
+ Elapsed time for equations is: less than one second.
+ [CPU for formulas and equations is 0.02 seconds.]
+ Elapsed time for formulas and equations is: less than one second.
+  (There are now 91039 nonzeros in those parts of
+      the equations calculated for this step.)
+  
+ 
+  (Beginning simulation for pass number 4 of a 5-pass simulation,
+    subinterval 2.)
+   (Total number of nonzero entries 
+    in the left hand side matrix is 91039.)
+  [KSTEPA=4, NPASSA=5]
+  [Have been 1 extra reallocations of MMNZ,MMNZ1. This may be
+    slowing down this sim considerably. A suitable
+    "start with MMNZ = <value> ;" statement
+     may speed things up.]
+   [See Section 32.3 of the GEMPACK Manual, "MMNZ: Allocating memory for the LU
+    decomposition".][TopicID:gpd3.13.3]
+  [Completed 50.00000 percent of the whole sim. Subint 2 will do 50.00000.]
+ 
+  (Calculating the LU decomposition.)
+  Reusing permutations for zero free diagonal
+  Reusing strong connect permutations
+  ReUse of pivots successful
+   [CPU time for GPLU analysis is 0.03 seconds.]
+   Elapsed time for  GPLU analysis is: less than one second.
+  [Calling MA48BG.]
+   [CPU time for MA48B is 0.02 seconds.]
+   Elapsed time for MA48B is: less than one second.
+  (Minimum size of MMNZ and MMNZ1 to allow LU decomposition by MA48 is 224163.)
+  [CPU time for LU decomposition is 0.05 seconds.]
+  Elapsed time for LU decomposition is: less than one second.
+  [CPU time for MA48C/MA28I is 0.00 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Cumulative solution obtained.)
+ [CPU for simulation is 0.05 seconds.]
+ Elapsed time for simulation is: less than one second.
+ 
+  (Beginning the backsolve after pass 4 of this 5-pass calculation.)
+  (Subinterval number 2.)
+  [CPU for backsolve is 0.02 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 4 of this 5-pass calculation.)
+  (Subinterval 2.)
+  [CPU for update is 0.00 seconds.]
+  [CPU for step 4 is 0.08 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 4 is: less than one second.
+ 
+  --->  Beginning pass number 5 of 5-pass calculation, subinterval 2.
+  [Copying all updated values for use in this pass.]
+ [CPU for reads, formulas etc is 0.00 seconds.]
+ Elapsed time for reads, formulas etc is: less than one second.
+ 
+  [Starting TGCSM2W submatrices]
+ [CPU for equations is 0.00 seconds.]
+ Elapsed time for equations is: less than one second.
+ [CPU for formulas and equations is 0.00 seconds.]
+ Elapsed time for formulas and equations is: less than one second.
+  (There are now 91035 nonzeros in those parts of
+      the equations calculated for this step.)
+  
+ 
+  (Beginning simulation for pass number 5 of a 5-pass simulation,
+    subinterval 2.)
+   (Total number of nonzero entries 
+    in the left hand side matrix is 91035.)
+  [KSTEPA=5, NPASSA=5]
+  [Have been 1 extra reallocations of MMNZ,MMNZ1. This may be
+    slowing down this sim considerably. A suitable
+    "start with MMNZ = <value> ;" statement
+     may speed things up.]
+   [See Section 32.3 of the GEMPACK Manual, "MMNZ: Allocating memory for the LU
+    decomposition".][TopicID:gpd3.13.3]
+  [Completed 50.00000 percent of the whole sim. Subint 2 will do 50.00000.]
+ 
+  (Calculating the LU decomposition.)
+  Reusing permutations for zero free diagonal
+  Reusing strong connect permutations
+  Failed Reusing pivots in subblock 279 for pivot 3540 out of 5573
+     The pivot elements stability of 0.09969 is less than GPLUHarwellReuseU
+  Only part of previous pivots have been reused
+   [CPU time for GPLU analysis is 0.05 seconds.]
+   Elapsed time for  GPLU analysis is: less than one second.
+  [Calling MA48BG.]
+   [CPU time for MA48B is 0.00 seconds.]
+   Elapsed time for MA48B is: less than one second.
+  (Minimum size of MMNZ and MMNZ1 to allow LU decomposition by MA48 is 232901.)
+  [CPU time for LU decomposition is 0.05 seconds.]
+  Elapsed time for LU decomposition is: less than one second.
+  [CPU time for MA48C/MA28I is 0.02 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Cumulative solution obtained.)
+ [CPU for simulation is 0.08 seconds.]
+ Elapsed time for simulation is: less than one second.
+ 
+  (Beginning the backsolve after pass 5 of this 5-pass calculation.)
+  (Subinterval number 2.)
+  [CPU for backsolve is 0.02 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 5 of this 5-pass calculation.)
+  (Subinterval 2.)
+ 
+  (Writing the UC5/6/7 file.)
+  [CPU for update is 0.00 seconds.]
+  [CPU for step 5 is 0.09 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 5 is: less than one second.
+ Elapsed time to do after-first-LU-decomp part
+  of this 5-pass calculation is: less than one second.
+ [CPU for all of this 4-step calculation is 0.39 seconds.]
+ Elapsed time for all this 4-step calculation is: less than one second.
+ 
+  --->  Beginning pass number 1 of 7-pass calculation, subinterval 2.
+  [Copying all updated values for use in this pass.]
+ [CPU for simulation is 0.00 seconds.]
+ Elapsed time for simulation is: less than one second.
+ 
+  (Beginning the backsolve after pass 1 of this 7-pass calculation.)
+  (Subinterval number 2.)
+ 
+  (Reading the Interval Work file.)
+  [CPU for backsolve is 0.05 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 1 of this 7-pass calculation.)
+  (Subinterval 2.)
+  [CPU for update is 0.00 seconds.]
+  [CPU for step 1 is 0.06 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 1 is: less than one second.
+ 
+  --->  Beginning pass number 2 of 7-pass calculation, subinterval 2.
+  [Copying all updated values for use in this pass.]
+ [CPU for reads, formulas etc is 0.00 seconds.]
+ Elapsed time for reads, formulas etc is: less than one second.
+ 
+  [Starting TGCSM2W submatrices]
+ [CPU for equations is 0.00 seconds.]
+ Elapsed time for equations is: less than one second.
+ [CPU for formulas and equations is 0.00 seconds.]
+ Elapsed time for formulas and equations is: less than one second.
+  (There are now 91033 nonzeros in those parts of
+      the equations calculated for this step.)
+  
+ 
+  (Beginning simulation for pass number 2 of a 7-pass simulation,
+    subinterval 2.)
+   (Total number of nonzero entries 
+    in the left hand side matrix is 91033.)
+  [KSTEPA=2, NPASSA=7]
+  [Have been 1 extra reallocations of MMNZ,MMNZ1. This may be
+    slowing down this sim considerably. A suitable
+    "start with MMNZ = <value> ;" statement
+     may speed things up.]
+   [See Section 32.3 of the GEMPACK Manual, "MMNZ: Allocating memory for the LU
+    decomposition".][TopicID:gpd3.13.3]
+  [Completed 50.00000 percent of the whole sim. Subint 2 will do 50.00000.]
+ 
+  (Calculating the LU decomposition.)
+  Reusing permutations for zero free diagonal
+  Reusing strong connect permutations
+  Failed Reusing pivots in subblock 279 for pivot 3540 out of 5556
+     The pivot elements stability of 0.08573 is less than GPLUHarwellReuseU
+  Only part of previous pivots have been reused
+   [CPU time for GPLU analysis is 0.05 seconds.]
+   Elapsed time for  GPLU analysis is: less than one second.
+  [Calling MA48BG.]
+   [CPU time for MA48B is 0.02 seconds.]
+   Elapsed time for MA48B is: less than one second.
+  (Minimum size of MMNZ and MMNZ1 to allow LU decomposition by MA48 is 227540.)
+  [CPU time for LU decomposition is 0.06 seconds.]
+  Elapsed time for LU decomposition is: less than one second.
+  [CPU time for MA48C/MA28I is 0.00 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Cumulative solution obtained.)
+ [CPU for simulation is 0.06 seconds.]
+ Elapsed time for simulation is: less than one second.
+ 
+  (Beginning the backsolve after pass 2 of this 7-pass calculation.)
+  (Subinterval number 2.)
+  [CPU for backsolve is 0.02 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 2 of this 7-pass calculation.)
+  (Subinterval 2.)
+  [CPU for update is 0.00 seconds.]
+  [CPU for step 2 is 0.08 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 2 is: less than one second.
+ 
+  --->  Beginning pass number 3 of 7-pass calculation, subinterval 2.
+  [Copying all updated values for use in this pass.]
+ [CPU for reads, formulas etc is 0.00 seconds.]
+ Elapsed time for reads, formulas etc is: less than one second.
+ 
+  [Starting TGCSM2W submatrices]
+ [CPU for equations is 0.00 seconds.]
+ Elapsed time for equations is: less than one second.
+ [CPU for formulas and equations is 0.00 seconds.]
+ Elapsed time for formulas and equations is: less than one second.
+  (There are now 91033 nonzeros in those parts of
+      the equations calculated for this step.)
+  
+ 
+  (Beginning simulation for pass number 3 of a 7-pass simulation,
+    subinterval 2.)
+   (Total number of nonzero entries 
+    in the left hand side matrix is 91033.)
+  [KSTEPA=3, NPASSA=7]
+  [Have been 1 extra reallocations of MMNZ,MMNZ1. This may be
+    slowing down this sim considerably. A suitable
+    "start with MMNZ = <value> ;" statement
+     may speed things up.]
+   [See Section 32.3 of the GEMPACK Manual, "MMNZ: Allocating memory for the LU
+    decomposition".][TopicID:gpd3.13.3]
+  [Completed 50.00000 percent of the whole sim. Subint 2 will do 50.00000.]
+ 
+  (Calculating the LU decomposition.)
+  Reusing permutations for zero free diagonal
+  Reusing strong connect permutations
+  Failed Reusing pivots in subblock 279 for pivot 3543 out of 5557
+     The pivot elements stability of 0.09974 is less than GPLUHarwellReuseU
+  Only part of previous pivots have been reused
+   [CPU time for GPLU analysis is 0.05 seconds.]
+   Elapsed time for  GPLU analysis is: less than one second.
+  [Calling MA48BG.]
+   [CPU time for MA48B is 0.02 seconds.]
+   Elapsed time for MA48B is: less than one second.
+  (Minimum size of MMNZ and MMNZ1 to allow LU decomposition by MA48 is 227619.)
+  [CPU time for LU decomposition is 0.06 seconds.]
+  Elapsed time for LU decomposition is: less than one second.
+  [CPU time for MA48C/MA28I is 0.00 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Cumulative solution obtained.)
+ [CPU for simulation is 0.06 seconds.]
+ Elapsed time for simulation is: less than one second.
+ 
+  (Beginning the backsolve after pass 3 of this 7-pass calculation.)
+  (Subinterval number 2.)
+  [CPU for backsolve is 0.02 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 3 of this 7-pass calculation.)
+  (Subinterval 2.)
+  [CPU for update is 0.00 seconds.]
+  [CPU for step 3 is 0.08 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 3 is: less than one second.
+ 
+  --->  Beginning pass number 4 of 7-pass calculation, subinterval 2.
+  [Copying all updated values for use in this pass.]
+ [CPU for reads, formulas etc is 0.00 seconds.]
+ Elapsed time for reads, formulas etc is: less than one second.
+ 
+  [Starting TGCSM2W submatrices]
+ [CPU for equations is 0.00 seconds.]
+ Elapsed time for equations is: less than one second.
+ [CPU for formulas and equations is 0.00 seconds.]
+ Elapsed time for formulas and equations is: less than one second.
+  (There are now 91027 nonzeros in those parts of
+      the equations calculated for this step.)
+  
+ 
+  (Beginning simulation for pass number 4 of a 7-pass simulation,
+    subinterval 2.)
+   (Total number of nonzero entries 
+    in the left hand side matrix is 91027.)
+  [KSTEPA=4, NPASSA=7]
+  [Have been 1 extra reallocations of MMNZ,MMNZ1. This may be
+    slowing down this sim considerably. A suitable
+    "start with MMNZ = <value> ;" statement
+     may speed things up.]
+   [See Section 32.3 of the GEMPACK Manual, "MMNZ: Allocating memory for the LU
+    decomposition".][TopicID:gpd3.13.3]
+  [Completed 50.00000 percent of the whole sim. Subint 2 will do 50.00000.]
+ 
+  (Calculating the LU decomposition.)
+  Reusing permutations for zero free diagonal
+  Reusing strong connect permutations
+  Failed Reusing pivots in subblock 279 for pivot 3540 out of 5558
+     The pivot elements stability of 0.09969 is less than GPLUHarwellReuseU
+  Only part of previous pivots have been reused
+   [CPU time for GPLU analysis is 0.05 seconds.]
+   Elapsed time for  GPLU analysis is: less than one second.
+  [Calling MA48BG.]
+   [CPU time for MA48B is 0.00 seconds.]
+   Elapsed time for MA48B is: less than one second.
+  (Minimum size of MMNZ and MMNZ1 to allow LU decomposition by MA48 is 223950.)
+  [CPU time for LU decomposition is 0.05 seconds.]
+  Elapsed time for LU decomposition is: less than one second.
+  [CPU time for MA48C/MA28I is 0.02 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Cumulative solution obtained.)
+ [CPU for simulation is 0.08 seconds.]
+ Elapsed time for simulation is: less than one second.
+ 
+  (Beginning the backsolve after pass 4 of this 7-pass calculation.)
+  (Subinterval number 2.)
+  [CPU for backsolve is 0.02 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 4 of this 7-pass calculation.)
+  (Subinterval 2.)
+  [CPU for update is 0.00 seconds.]
+  [CPU for step 4 is 0.09 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 4 is: less than one second.
+ 
+  --->  Beginning pass number 5 of 7-pass calculation, subinterval 2.
+  [Copying all updated values for use in this pass.]
+ [CPU for reads, formulas etc is 0.00 seconds.]
+ Elapsed time for reads, formulas etc is: less than one second.
+ 
+  [Starting TGCSM2W submatrices]
+ [CPU for equations is 0.00 seconds.]
+ Elapsed time for equations is: less than one second.
+ [CPU for formulas and equations is 0.00 seconds.]
+ Elapsed time for formulas and equations is: less than one second.
+  (There are now 91037 nonzeros in those parts of
+      the equations calculated for this step.)
+  
+ 
+  (Beginning simulation for pass number 5 of a 7-pass simulation,
+    subinterval 2.)
+   (Total number of nonzero entries 
+    in the left hand side matrix is 91037.)
+  [KSTEPA=5, NPASSA=7]
+  [Have been 1 extra reallocations of MMNZ,MMNZ1. This may be
+    slowing down this sim considerably. A suitable
+    "start with MMNZ = <value> ;" statement
+     may speed things up.]
+   [See Section 32.3 of the GEMPACK Manual, "MMNZ: Allocating memory for the LU
+    decomposition".][TopicID:gpd3.13.3]
+  [Completed 50.00000 percent of the whole sim. Subint 2 will do 50.00000.]
+ 
+  (Calculating the LU decomposition.)
+  Reusing permutations for zero free diagonal
+  Reusing strong connect permutations
+  ReUse of pivots successful
+   [CPU time for GPLU analysis is 0.05 seconds.]
+   Elapsed time for  GPLU analysis is: less than one second.
+  [Calling MA48BG.]
+   [CPU time for MA48B is 0.00 seconds.]
+   Elapsed time for MA48B is: less than one second.
+  (Minimum size of MMNZ and MMNZ1 to allow LU decomposition by MA48 is 223960.)
+  [CPU time for LU decomposition is 0.05 seconds.]
+  Elapsed time for LU decomposition is: less than one second.
+  [CPU time for MA48C/MA28I is 0.02 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Cumulative solution obtained.)
+ [CPU for simulation is 0.06 seconds.]
+ Elapsed time for simulation is: less than one second.
+ 
+  (Beginning the backsolve after pass 5 of this 7-pass calculation.)
+  (Subinterval number 2.)
+  [CPU for backsolve is 0.02 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 5 of this 7-pass calculation.)
+  (Subinterval 2.)
+  [CPU for update is 0.00 seconds.]
+  [CPU for step 5 is 0.08 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 5 is: less than one second.
+ 
+  --->  Beginning pass number 6 of 7-pass calculation, subinterval 2.
+  [Copying all updated values for use in this pass.]
+ [CPU for reads, formulas etc is 0.00 seconds.]
+ Elapsed time for reads, formulas etc is: less than one second.
+ 
+  [Starting TGCSM2W submatrices]
+ [CPU for equations is 0.00 seconds.]
+ Elapsed time for equations is: less than one second.
+ [CPU for formulas and equations is 0.00 seconds.]
+ Elapsed time for formulas and equations is: less than one second.
+  (There are now 91036 nonzeros in those parts of
+      the equations calculated for this step.)
+  
+ 
+  (Beginning simulation for pass number 6 of a 7-pass simulation,
+    subinterval 2.)
+   (Total number of nonzero entries 
+    in the left hand side matrix is 91036.)
+  [KSTEPA=6, NPASSA=7]
+  [Have been 1 extra reallocations of MMNZ,MMNZ1. This may be
+    slowing down this sim considerably. A suitable
+    "start with MMNZ = <value> ;" statement
+     may speed things up.]
+   [See Section 32.3 of the GEMPACK Manual, "MMNZ: Allocating memory for the LU
+    decomposition".][TopicID:gpd3.13.3]
+  [Completed 50.00000 percent of the whole sim. Subint 2 will do 50.00000.]
+ 
+  (Calculating the LU decomposition.)
+  Reusing permutations for zero free diagonal
+  Reusing strong connect permutations
+  ReUse of pivots successful
+   [CPU time for GPLU analysis is 0.05 seconds.]
+   Elapsed time for  GPLU analysis is: less than one second.
+  [Calling MA48BG.]
+   [CPU time for MA48B is 0.00 seconds.]
+   Elapsed time for MA48B is: less than one second.
+  (Minimum size of MMNZ and MMNZ1 to allow LU decomposition by MA48 is 223959.)
+  [CPU time for LU decomposition is 0.05 seconds.]
+  Elapsed time for LU decomposition is: less than one second.
+  [CPU time for MA48C/MA28I is 0.02 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Cumulative solution obtained.)
+ [CPU for simulation is 0.06 seconds.]
+ Elapsed time for simulation is: less than one second.
+ 
+  (Beginning the backsolve after pass 6 of this 7-pass calculation.)
+  (Subinterval number 2.)
+  [CPU for backsolve is 0.00 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 6 of this 7-pass calculation.)
+  (Subinterval 2.)
+  [CPU for update is 0.00 seconds.]
+  [CPU for step 6 is 0.06 seconds.]
+  Elapsed time for update is: less than one second.
+  Elapsed time for step 6 is: less than one second.
+ 
+  --->  Beginning pass number 7 of 7-pass calculation, subinterval 2.
+  [Copying all updated values for use in this pass.]
+ [CPU for reads, formulas etc is 0.00 seconds.]
+ Elapsed time for reads, formulas etc is: less than one second.
+ 
+  [Starting TGCSM2W submatrices]
+ [CPU for equations is 0.00 seconds.]
+ Elapsed time for equations is: less than one second.
+ [CPU for formulas and equations is 0.00 seconds.]
+ Elapsed time for formulas and equations is: less than one second.
+  (There are now 91039 nonzeros in those parts of
+      the equations calculated for this step.)
+  
+ 
+  (Beginning simulation for pass number 7 of a 7-pass simulation,
+    subinterval 2.)
+   (Total number of nonzero entries 
+    in the left hand side matrix is 91039.)
+  [KSTEPA=7, NPASSA=7]
+  [Have been 1 extra reallocations of MMNZ,MMNZ1. This may be
+    slowing down this sim considerably. A suitable
+    "start with MMNZ = <value> ;" statement
+     may speed things up.]
+   [See Section 32.3 of the GEMPACK Manual, "MMNZ: Allocating memory for the LU
+    decomposition".][TopicID:gpd3.13.3]
+  [Completed 50.00000 percent of the whole sim. Subint 2 will do 50.00000.]
+ 
+  (Calculating the LU decomposition.)
+  Reusing permutations for zero free diagonal
+  Reusing strong connect permutations
+  Failed Reusing pivots in subblock 279 for pivot 3540 out of 5574
+     The pivot elements stability of 0.09849 is less than GPLUHarwellReuseU
+  Only part of previous pivots have been reused
+   [CPU time for GPLU analysis is 0.05 seconds.]
+   Elapsed time for  GPLU analysis is: less than one second.
+  [Calling MA48BG.]
+   [CPU time for MA48B is 0.02 seconds.]
+   Elapsed time for MA48B is: less than one second.
+  (Minimum size of MMNZ and MMNZ1 to allow LU decomposition by MA48 is 232773.)
+  [CPU time for LU decomposition is 0.06 seconds.]
+  Elapsed time for LU decomposition is: less than one second.
+  [CPU time for MA48C/MA28I is 0.00 seconds.]
+  [CPU time for solution accuracy check is 0.00 seconds.]
+  (Cumulative solution obtained.)
+ [CPU for simulation is 0.06 seconds.]
+ Elapsed time for simulation is: less than one second.
+ 
+  (Beginning the backsolve after pass 7 of this 7-pass calculation.)
+  (Subinterval number 2.)
+  [CPU for backsolve is 0.02 seconds.]
+  Elapsed time for backsolve is: less than one second.
+ 
+  (Beginning the update after pass 7 of this 7-pass calculation.)
+  (Subinterval 2.)
+ 
+  (Writing the UC5/6/7 file.)
+  [CPU for update is 0.02 seconds.]
+  [CPU for step 7 is 0.11 seconds.]
+  Elapsed time for update is:  1 seconds.
+  Elapsed time for step 7 is:  1 seconds.
+ Elapsed time to do after-first-LU-decomp part
+  of this 7-pass calculation is:  1 seconds.
+ [CPU for all of this 6-step calculation is 0.56 seconds.]
+ Elapsed time for all this 6-step calculation is:  1 seconds.
+  [Copying all updated values for use in this pass.]
+ 
+  ---> Beginning the extrapolation.
+ 
+  (Extrapolating - Cumulative results.)
+ 
+        SUMMARY OF CONVERGENCE RESULTS                  Number   Min Figs Agree
+        ------------------------------                  ------   --------------
+   XMA  Three extrapolations equal to machine accuracy   18190         6
+   C0   Confidence that the result is zero                   1
+   FC0  Fair confidence that the result is zero             32
+   CX   Confidence in the extrapolated result            14938         1
+   FCX  Fair confidence in the extrapolated result         109         2
+   MVC  Monotonic, results very close together               8         5
+   MN0  Monotonic, results near zero                         5         1
+   MC?  Monotonic, appears to be converging                 93         0
+   MD?  Monotonic, but may be diverging                      5         2
+   MD!  Monotonic, but appears to be diverging               1         2
+   OVC  Oscillating, but results very close together        11         5
+   ON0  Oscillating, but results near zero                   2         3
+   OC?  Oscillating, but appears to be converging           53         1
+   OD?  Oscillating and may be diverging                     8         1
+   OD!  Oscillating and appears to be diverging              8         2
+ 
+   2 results are judged accurate to 0 figures.
+   10 results are judged accurate to 1 figures.
+   33 results are judged accurate to 2 figures.
+   336 results are judged accurate to 3 figures.
+   2194 results are judged accurate to 4 figures.
+   12655 results are judged accurate to 5 figures.
+   18201 results are judged accurate to 6 figures.
+ 
+  Above is for linearised variables.
+  Below are for levels values of percent-change and change results.
+  
+   2 results are judged accurate to 0 figures.
+   5 results are judged accurate to 1 figures.
+   29 results are judged accurate to 2 figures.
+   226 results are judged accurate to 3 figures.
+   1000 results are judged accurate to 4 figures.
+   2684 results are judged accurate to 5 figures.
+   29518 results are judged accurate to 6 figures.
+ 
+  (The summary above covers the XAC-retained variables.)
+  
+ [CPU for extrapolation is 0.02 seconds.]
+ Elapsed time for extrapolation is: less than one second.
+ 
+  NEXT SUMMARY IS FOR ALL UPDATED DATA
+  
+ 
+        SUMMARY OF CONVERGENCE RESULTS                  Number   Min Figs Agree
+        ------------------------------                  ------   --------------
+   XMA  Three extrapolations equal to machine accuracy   12286         6
+   CX   Confidence in the extrapolated result               15         5
+ 
+   15 results are judged accurate to 5 figures.
+   12286 results are judged accurate to 6 figures.
+ 
+ 
+  Variable accuracy "face" number is 9 (out of 10).
+  Data accuracy "face" number is 10 (out of 10).
+  
+ 
+  Accuracy for subinterval 2 is sufficient - accuracy was 100.0000 percent.
+  (Now have completed the whole simulation.)
+ [CPU for subinterval number 2 is 1.36 seconds.]
+ Elapsed time for subinterval number 2 is:  2 seconds.
+ 
+  Total memory currently used for all arrays is approximately 8.15 megabytes.
+  [This includes memory relating to current values:    MMNZ=315601, MMNZ1=315601 and MMNZ2=210368.]
+  [Add about 5-10 megabytes for the memory used by the code.]
+  [Total memory currently allocated for Coefficients and Updated
+   Coefficients is about        0.2 and        0.0 MB respectively.]
+  [This is probably the most memory that will be used in this run.]
+  
+ [Deallocated MMNZ memory before TGCMST call (TGGSEND1).]
+ 
+  (Final cumulative solution written to Solution file.)
+ 
+ -----------------------------------------------------
+  ACCURACY SUMMARY FOR OVERALL RESULTS
+ 
+        SUMMARY OF CONVERGENCE RESULTS                  Number   Min Figs Agree
+        ------------------------------                  ------   --------------
+   XMA  Three extrapolations equal to machine accuracy   14880         6
+   FC0  Fair confidence that the result is zero             28
+   CX   Confidence in the extrapolated result            18164         1
+   FCX  Fair confidence in the extrapolated result         170         2
+   MN0  Monotonic, results near zero                         3         2
+   MC?  Monotonic, appears to be converging                115         0
+   MD?  Monotonic, but may be diverging                      5         2
+   MD!  Monotonic, but appears to be diverging               2         2
+   OVC  Oscillating, but results very close together         2         4
+   ON0  Oscillating, but results near zero                   2         1
+   OC?  Oscillating, but appears to be converging           74         1
+   OD?  Oscillating and may be diverging                     6         2
+   OD!  Oscillating and appears to be diverging             13         1
+ 
+   4 results are judged accurate to 0 figures.
+   12 results are judged accurate to 1 figures.
+   59 results are judged accurate to 2 figures.
+   578 results are judged accurate to 3 figures.
+   3662 results are judged accurate to 4 figures.
+   14231 results are judged accurate to 5 figures.
+   14918 results are judged accurate to 6 figures.
+ 
+  Above is for linearised variables.
+  Below are for levels values of percent-change and change results.
+  
+   3 results are judged accurate to 0 figures.
+   7 results are judged accurate to 1 figures.
+   47 results are judged accurate to 2 figures.
+   318 results are judged accurate to 3 figures.
+   1423 results are judged accurate to 4 figures.
+   2877 results are judged accurate to 5 figures.
+   28789 results are judged accurate to 6 figures.
+ 
+  (The summary above covers the XAC-retained variables.)
+  
+ 
+  Variable accuracy "face" number is 9 (out of 10).
+  
+  END OF ACCURACY SUMMARY FOR OVERALL RESULTS
+ ------------------------------------------------------
+ 
+ -----------------------------------------------------
+  ACCURACY SUMMARY FOR OVERALL DATA
+ 
+        SUMMARY OF CONVERGENCE RESULTS                  Number   Min Figs Agree
+        ------------------------------                  ------   --------------
+   XMA  Three extrapolations equal to machine accuracy   12222         6
+   CX   Confidence in the extrapolated result               79         5
+ 
+   79 results are judged accurate to 5 figures.
+   12222 results are judged accurate to 6 figures.
+ 
+ 
+  Data accuracy "face" number is 10 (out of 10).
+  
+  END OF ACCURACY SUMMARY FOR OVERALL DATA
+ ------------------------------------------------------
+  [Total CPU is 3.03 seconds.]
+ 
+  (Minimum values for successful completion seem to be:
+    MMNZ=232901, MMNZ1=232901, MMNZ2=232901.)
+ 
+  %% ADVICE. During this run MMNZ,MMNZ1 were
+       reallocated 1 times. This may have
+     slowed down this run considerably.
+   We strongly suggest that you include an appropriate
+     statement of the form "start with mmnz = <value> ;"
+       in your Command file.
+   [See Section 32.3 of the GEMPACK Manual, "MMNZ: Allocating memory for the LU
+    decomposition".][TopicID:gpd3.13.3]
+   [Be guided by the minimum values shown just above.]
+ 
+  Total memory currently used for all arrays is approximately 4.94 megabytes.
+  [This does NOT include memory related to MMNZ, MMNZ1 and MMNZ2. The
+   associated arrays are not allocated.]
+  [Add about 5-10 megabytes for the memory used by the code.]
+  [Total memory currently allocated for Coefficients and Updated
+   Coefficients is about        0.2 and        0.0 MB respectively.]
+  [The likely maximum memory used in this run has 
+    been reported earlier - search for "most memory".]
+  
+ 
+  Maximum residual ratio across whole simulation is 1.0760365E-07
+  
+ (Solution file is 'C:\runGTAP375\work\17HiSk.sl4'.)
+ (SLC file is 'C:\runGTAP375\work\17HiSk.slc'.)
+ 
+  (Inputs have been taken from the Command file "C:\runGTAP375\work\17HiSk.cmf")
+ 
+  (The program has completed without error.)
+  (The program has completed without warnings.)
+  
+  Total elapsed time is:  4 seconds.
+
+ This run ended at 16:54:02 on 20-JUL-2021
