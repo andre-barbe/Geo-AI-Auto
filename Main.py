@@ -57,20 +57,30 @@ lines_common=[
     "Rest Endogenous ;\n",
     "\n",
 ]
-lines_sim_specific=[
-    "Updated file gtapDATA = Results/01Ref.upd;\n",
-    "Solution file = Results/01Ref;\n",
-    "file gtapPARM = GTAP_Data_Files\default.prm;\n",
-    "Verbal Description =\n",
-    "1 Reference case. Increase supply of all 5 types of labor in USA;\n",
-    "\n",
-    "swap qo(\"capital\",REG) = Expand(\"capital\",REG);\n",
-    "shock qo(all_lab , \"usa\") = uniform 50;\n"
-]
 
-cmf_file  = open("Control_Files/01Ref.cmf", "w")
-cmf_file.writelines(lines_common + lines_sim_specific)
-cmf_file.close()
+simulation_dictionary={
+    '01Ref' :
+    ["Updated file gtapDATA = Results/01Ref.upd;\n",
+       "Solution file = Results/01Ref;\n",
+      "file gtapPARM = GTAP_Data_Files/default.prm;\n",
+      "Verbal Description =\n",
+      "1 Reference case. Increase supply of all 5 types of labor in USA;\n",
+      "\n",
+      "swap qo(\"capital\",REG) = Expand(\"capital\",REG);\n",
+      "shock qo(all_lab , \"usa\") = uniform 50;\n"],
+    '02Test':
+        ["Updated file gtapDATA = Results/02Test.upd;\n",
+         "Solution file = Results/02Test;\n",
+         "file gtapPARM = GTAP_Data_Files/default.prm;\n",
+         "Verbal Description =\n",
+         "2 Test case. Increase supply of all 5 types of labor in USA;\n",
+         "\n",
+         "swap qo(\"capital\",REG) = Expand(\"capital\",REG);\n",
+         "shock qo(all_lab , \"usa\") = uniform 50;\n"]
+}
 
-
-subprocess.call("Control_Files\Run_GTAP_SLTOHT.cmd")
+for simulation_name in simulation_dictionary.keys():
+    cmf_file  = open("Control_Files/{0}.cmf".format(simulation_name), "w")
+    cmf_file.writelines(lines_common + simulation_dictionary[simulation_name])
+    cmf_file.close()
+    subprocess.call("GTAP_Model_Files/GTAPU.exe -cmf Control_Files/{0}.cmf".format(simulation_name))
