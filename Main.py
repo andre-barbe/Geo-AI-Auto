@@ -72,15 +72,24 @@ simulation_dictionary={
       "\n",
       "swap qo(\"capital\",REG) = Expand(\"capital\",REG);\n",
       "shock qo(all_lab , \"usa\") = uniform 50;\n"],
-    '02Test':
-        ["Updated file gtapDATA = Results/02Test.upd;\n",
-         "Solution file = Results/02Test;\n",
+    '11SecAI':
+        ["Updated file gtapDATA = Results/11SecAI.upd;\n",
+         "Solution file = Results/11SecAI;\n",
          "file gtapPARM = GTAP_Data_Files/default.prm;\n",
          "Verbal Description =\n",
-         "2 Test case. Increase supply of all 5 types of labor in USA;\n",
+         "11 AI Sectors only. Productivity;\n",
          "\n",
          "swap qo(\"capital\",REG) = Expand(\"capital\",REG);\n",
-         "shock qo(all_lab , \"usa\") = uniform 50;\n"]
+         "shock afeall(all_lab, ai_comm, \"usa\") = uniform 50;\n"],
+    '12Aug':
+        ["Updated file gtapDATA = Results/12Aug.upd;\n",
+         "Solution file = Results/12Aug;\n",
+         "file gtapPARM = GTAP_Data_Files/default.prm;\n",
+         "Verbal Description =\n",
+         "12 All US Sectors. Productivity;\n",
+         "\n",
+         "swap qo(\"capital\",REG) = Expand(\"capital\",REG);\n",
+         "shock afeall(all_lab, prod_comm, \"usa\") = uniform 50;\n"]
 }
 
 #Loop to create the cmf file and run it
