@@ -107,8 +107,8 @@ simulation_dictionary={
          "swap qo(\"capital\",REG) = Expand(\"capital\",REG);\n",
          "shock qo(hi_lab, \"usa\") = uniform 50;\n"],
     '18AiSecW': #Increase producivity of AI sectors, but in entire world (not just US as in 11)
-        ["Updated file gtapDATA = Results/17HiSk.upd;\n",
-         "Solution file = Results/17HiSk;\n",
+        ["Updated file gtapDATA = Results/18AiSecW.upd;\n",
+         "Solution file = Results/18AiSecW;\n",
          "swap qo(\"capital\",REG) = Expand(\"capital\",REG);\n",
          "shock afeall(all_lab, ai_comm, reg) = uniform 50;\n"]
 }
@@ -119,3 +119,4 @@ for simulation_name in simulation_dictionary.keys():
     cmf_file.writelines(lines_common + simulation_dictionary[simulation_name])
     cmf_file.close()
     subprocess.call("GTAP_Model_Files/GTAPU.exe -cmf Control_Files/{0}.cmf".format(simulation_name))
+    subprocess.call("sltoht -ses Results/{0}".format(simulation_name))
