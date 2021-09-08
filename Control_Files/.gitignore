@@ -1,0 +1,6 @@
+#   Blank file to put this directory in VCS as empty
+# Source: https://stackoverflow.com/questions/115983/how-can-i-add-a-blank-directory-to-a-git-repository
+# Ignore everything in this diretory
+*
+# Except this file
+!.gitignore
