@@ -45,11 +45,10 @@ exogenous
           atall avaall tf tfd tfm tgd tpd tgm tpm;
 Rest Endogenous ;
 
-Updated file gtapDATA = Results/01Ref.upd;
-Solution file = Results/01Ref;
 file gtapPARM = GTAP_Data_Files/default.prm;
 Verbal Description =
-1 Reference case. Increase supply of all 5 types of labor in USA;
-
+none;
+Updated file gtapDATA = Results/01Ref.upd;
+Solution file = Results/01Ref;
 swap qo("capital",REG) = Expand("capital",REG);
 shock qo(all_lab , "usa") = uniform 50;

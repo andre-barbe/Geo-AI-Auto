@@ -45,11 +45,10 @@ exogenous
           atall avaall tf tfd tfm tgd tpd tgm tpm;
 Rest Endogenous ;
 
-Updated file gtapDATA = Results/12Aug.upd;
-Solution file = Results/12Aug;
 file gtapPARM = GTAP_Data_Files/default.prm;
 Verbal Description =
-12 All US Sectors. Productivity;
-
+none;
+Updated file gtapDATA = Results/12Aug.upd;
+Solution file = Results/12Aug;
 swap qo("capital",REG) = Expand("capital",REG);
 shock afeall(all_lab, prod_comm, "usa") = uniform 50;

@@ -57,6 +57,9 @@ lines_common=[
     "          atall avaall tf tfd tfm tgd tpd tgm tpm;\n",
     "Rest Endogenous ;\n",
     "\n",
+    "file gtapPARM = GTAP_Data_Files/default.prm;\n",
+    "Verbal Description =\n",
+    "none;\n",
 ]
 
 #Define the dictionary of simulations. It is of the form:
@@ -64,33 +67,28 @@ lines_common=[
 # Entry (Sim cmf stuff, such as solution file location and the shocks
 simulation_dictionary={
     '01Ref' :
-    ["Updated file gtapDATA = Results/01Ref.upd;\n",
-       "Solution file = Results/01Ref;\n",
-      "file gtapPARM = GTAP_Data_Files/default.prm;\n",
-      "Verbal Description =\n",
-      "1 Reference case. Increase supply of all 5 types of labor in USA;\n",
-      "\n",
-      "swap qo(\"capital\",REG) = Expand(\"capital\",REG);\n",
-      "shock qo(all_lab , \"usa\") = uniform 50;\n"],
+        ["Updated file gtapDATA = Results/01Ref.upd;\n",
+        "Solution file = Results/01Ref;\n",
+        "swap qo(\"capital\",REG) = Expand(\"capital\",REG);\n",
+        "shock qo(all_lab , \"usa\") = uniform 50;\n"],
     '11SecAI':
         ["Updated file gtapDATA = Results/11SecAI.upd;\n",
          "Solution file = Results/11SecAI;\n",
-         "file gtapPARM = GTAP_Data_Files/default.prm;\n",
-         "Verbal Description =\n",
-         "11 AI Sectors only. Productivity;\n",
-         "\n",
          "swap qo(\"capital\",REG) = Expand(\"capital\",REG);\n",
          "shock afeall(all_lab, ai_comm, \"usa\") = uniform 50;\n"],
     '12Aug':
         ["Updated file gtapDATA = Results/12Aug.upd;\n",
          "Solution file = Results/12Aug;\n",
-         "file gtapPARM = GTAP_Data_Files/default.prm;\n",
-         "Verbal Description =\n",
-         "12 All US Sectors. Productivity;\n",
-         "\n",
          "swap qo(\"capital\",REG) = Expand(\"capital\",REG);\n",
-         "shock afeall(all_lab, prod_comm, \"usa\") = uniform 50;\n"]
+         "shock afeall(all_lab, prod_comm, \"usa\") = uniform 50;\n"],
+    '13SecNAI':
+        ["Updated file gtapDATA = Results/13SecNAI.upd;\n",
+         "Solution file = Results/13SecNAI;\n",
+         "swap qo(\"capital\",REG) = Expand(\"capital\",REG);\n",
+         "shock afeall(all_lab, nonai_comm, \"usa\") = uniform 50;\n"]
 }
+
+
 
 #Loop to create the cmf file and run it
 for simulation_name in simulation_dictionary.keys():

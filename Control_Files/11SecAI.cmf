@@ -45,11 +45,10 @@ exogenous
           atall avaall tf tfd tfm tgd tpd tgm tpm;
 Rest Endogenous ;
 
-Updated file gtapDATA = Results/11SecAI.upd;
-Solution file = Results/11SecAI;
 file gtapPARM = GTAP_Data_Files/default.prm;
 Verbal Description =
-11 AI Sectors only. Productivity;
-
+none;
+Updated file gtapDATA = Results/11SecAI.upd;
+Solution file = Results/11SecAI;
 swap qo("capital",REG) = Expand("capital",REG);
 shock afeall(all_lab, ai_comm, "usa") = uniform 50;
