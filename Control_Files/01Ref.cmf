@@ -17,14 +17,10 @@ XSET ALL_LAB = HI_LAB + LO_LAB ;
 XSUBSET ALL_LAB is subset of ENDW_COMM ;
 !@ end of CMFSTART part
 
-aux files = GTAP_Model_Files\GTAPU;
-file gtapSETS = GTAP_Data_Files\sets.har;
-file gtapDATA = GTAP_Data_Files\basedata.har;
-Updated file gtapDATA = Results\gdata.upd;
-Solution file = Results\01Ref;
-file gtapPARM = GTAP_Data_Files\default.prm;
-Verbal Description =
-1 Reference case. Increase supply of all 5 types of labor in USA;
+aux files = GTAP_Model_Files/GTAPU;
+file gtapSETS = GTAP_Data_Files/sets.har;
+file gtapDATA = GTAP_Data_Files/basedata.har;
+
 Method = Gragg;
 Steps = 2 4 6;
 automatic accuracy = yes;
@@ -48,6 +44,12 @@ exogenous
           qo(ENDW_COMM,REG)
           atall avaall tf tfd tfm tgd tpd tgm tpm;
 Rest Endogenous ;
+
+Updated file gtapDATA = Results/01Ref.upd;
+Solution file = Results/01Ref;
+file gtapPARM = GTAP_Data_Files\default.prm;
+Verbal Description =
+1 Reference case. Increase supply of all 5 types of labor in USA;
 
 swap qo("capital",REG) = Expand("capital",REG);
 shock qo(all_lab , "usa") = uniform 50;
