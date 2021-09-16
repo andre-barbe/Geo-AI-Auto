@@ -4,12 +4,16 @@ __created__ = "2021-09-06"
 
 import subprocess
 
+# Control options, to determine what parts of the program are run
+option_run_sim = 0
+option_run_Rscript = 1
+
 # Create cmf_file for each simulation
 # Instructions on how to write a cmf file are available here:
 # https://www.kite.com/python/answers/how-to-write-to-a-file-in-python
 
-#Define the lines in common to all cmf files
-lines_common=[
+# Define the lines in common to all cmf files
+lines_common = [
     "!Define AI and non-AI Sectors\n",
     "XSET AI_COMM # AI related comms # (OthServices, CMN, OBS, Transport) ;\n",
     "XSUBSET AI_COMM is subset of TRAD_COMM ;\n",
@@ -62,15 +66,15 @@ lines_common=[
     "none;\n",
 ]
 
-#Define the dictionary of simulations. It is of the form:
+# Define the dictionary of simulations. It is of the form:
 # key (Sim code name):
 # Entry (Sim cmf stuff, such as solution file location and the shocks
-simulation_dictionary={
-    '01Ref' :
+simulation_dictionary = {
+    '01Ref':
         ["Updated file gtapDATA = Results/01Ref.upd;\n",
-        "Solution file = Results/01Ref;\n",
-        "swap qo(\"capital\",REG) = Expand(\"capital\",REG);\n",
-        "shock qo(all_lab , \"usa\") = uniform 50;\n"],
+         "Solution file = Results/01Ref;\n",
+         "swap qo(\"capital\",REG) = Expand(\"capital\",REG);\n",
+         "shock qo(all_lab , \"usa\") = uniform 50;\n"],
     '11SecAI':
         ["Updated file gtapDATA = Results/11SecAI.upd;\n",
          "Solution file = Results/11SecAI;\n",
@@ -106,17 +110,33 @@ simulation_dictionary={
          "Solution file = Results/17HiSk;\n",
          "swap qo(\"capital\",REG) = Expand(\"capital\",REG);\n",
          "shock qo(hi_lab, \"usa\") = uniform 50;\n"],
-    '18AiSecW': #Increase producivity of AI sectors, but in entire world (not just US as in 11)
+    '18AiSecW':  # Increase producivity of AI sectors, but in entire world (not just US as in 11)
         ["Updated file gtapDATA = Results/18AiSecW.upd;\n",
          "Solution file = Results/18AiSecW;\n",
          "swap qo(\"capital\",REG) = Expand(\"capital\",REG);\n",
          "shock afeall(all_lab, ai_comm, reg) = uniform 50;\n"]
 }
 
-#Loop to create the cmf file and run it
-for simulation_name in simulation_dictionary.keys():
-    cmf_file  = open("Control_Files/{0}.cmf".format(simulation_name), "w")
-    cmf_file.writelines(lines_common + simulation_dictionary[simulation_name])
-    cmf_file.close()
-    subprocess.call("GTAP_Model_Files/GTAPU.exe -cmf Control_Files/{0}.cmf".format(simulation_name))
-    subprocess.call("sltoht -ses Results/{0}".format(simulation_name))
+# Loop to create the cmf file and run it
+if option_run_sim == 1:
+    for simulation_name in simulation_dictionary.keys():
+        cmf_file = open("Control_Files/{0}.cmf".format(simulation_name), "w")
+        cmf_file.writelines(lines_common + simulation_dictionary[simulation_name])
+        cmf_file.close()
+        subprocess.call("GTAP_Model_Files/GTAPU.exe -cmf Control_Files/{0}.cmf".format(simulation_name))
+        subprocess.call("sltoht -ses Results/{0}".format(simulation_name))
+
+# Exports results using R script. Runs the R script ReadHar
+if option_run_Rscript == 1:
+    # I could not get R scripts to run in python until I found this example
+    # Source: https://stackoverflow.com/questions/19905254/run-r-script-from-python-windows/57670896#57670896
+    # The key seems to be use double \ in the command line call
+    cmd_line = ["C:\\Program Files\\R\\R-4.1.0\\bin\\Rscript", "ReadHar.R"]
+
+    # This part is necessary to display the output of the popen to the python terminal.
+    # See https://stackoverflow.com/questions/18421757/live-output-from-subprocess-command
+    # There were some other lines before and after this part that caused errors, so I just deleted them
+    import sys
+    process = subprocess.Popen(cmd_line, stdout=subprocess.PIPE)
+    for c in iter(lambda: process.stdout.read(1), b''):
+        sys.stdout.buffer.write(c)
