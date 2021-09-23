@@ -113,5 +113,18 @@ df_results_temp=NULL #unload variables that I am no longer using
 hash_var_dim=NULL
 
 #Next step is to drop results that I won't use
+df_results_selection=df_results[
+  (df_results$var_name=="EV" & df_results$region=="USA") |
+  (df_results$var_name=="EV" & df_results$region=="China") |
+  (df_results$var_name=="qgdp" & df_results$region=="USA") |
+  (df_results$var_name=="qgdp" & df_results$region=="China") |
+  (df_results$var_name=="ps" & df_results$com=="Ag_OthLowSk" & df_results$region=="USA") |
+  (df_results$var_name=="ps" & df_results$com=="Ag_OthLowSk" & df_results$region=="China")
+  ,
+]
 
 #Next step is to create a table of results (not done yet)
+df_results_selection_wide= dcast(df_results_selection,
+  var_name + region ~ simulation_name,
+  value.var = "value"
+)
