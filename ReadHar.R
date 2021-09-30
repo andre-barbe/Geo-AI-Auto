@@ -41,7 +41,7 @@ for (simulation in list_simulation_names)
 }
 
 #Specify which variables to export results for
-list_var_to_export =c("EV","qgdp","ps")
+list_var_to_export =c("EV","qgdp","ps","DTBAL","rorg", "ke","WEV","globalcgds")
 
 #Specify which variables are multidimensional, so that they can be treated specially in the nex step
 # If dim >1, need to specify here
@@ -112,6 +112,7 @@ for (var in list_var_to_export)
 df_results_temp=NULL #unload variables that I am no longer using
 hash_var_dim=NULL
 
+
 #Next step is to drop results that I won't use
 df_results_selection=df_results[
   (df_results$var_name=="EV" & df_results$region=="USA") |
@@ -119,12 +120,21 @@ df_results_selection=df_results[
   (df_results$var_name=="qgdp" & df_results$region=="USA") |
   (df_results$var_name=="qgdp" & df_results$region=="China") |
   (df_results$var_name=="ps" & df_results$com=="Ag_OthLowSk" & df_results$region=="USA") |
-  (df_results$var_name=="ps" & df_results$com=="Ag_OthLowSk" & df_results$region=="China")
+  (df_results$var_name=="ps" & df_results$com=="Ag_OthLowSk" & df_results$region=="China") |
+  (df_results$var_name=="rorg" & df_results$region=="TOTAL") |
+  (df_results$var_name=="WEV" & df_results$region=="TOTAL") |
+  (df_results$var_name=="globalcgds" & df_results$region=="TOTAL") |
+  (df_results$var_name=="ke") 
   ,
 ]
+
+df_results_selection$value=signif(df_results_selection$value,2)
 
 #Next step is to create a table of results (not done yet)
 df_results_selection_wide= dcast(df_results_selection,
   var_name + region ~ simulation_name,
   value.var = "value"
 )
+
+#Export table to csv file
+write.csv(df_results_selection_wide,'Results/TableResults.csv')
